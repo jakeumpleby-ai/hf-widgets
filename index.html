@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        @keyframes conversionPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
         body { 
             background: transparent; 
-            overflow: hidden; 
             margin: 0; 
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: 'Inter', sans-serif;
+            overflow: hidden;
         }
         
-        .container { 
+        .widget-box { 
             width: 700px; 
             background: #ffffff; 
             border-radius: 40px; 
-            box-sizing: border-box;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* MASSIVE BRAND STAGE */
-        .banner-header {
+        /* MASSIVE BRAND HEADER */
+        .brand-header {
             width: 100%;
             background: #58b622; 
             padding: 50px 0; 
@@ -43,204 +37,169 @@
             align-items: center;
         }
 
-        /* Stable Base64 Logo */
-        .hf-logo-img {
-            height: 75px; 
+        .hf-logo {
+            height: 70px; /* Dominant Brand Component */
             width: auto;
-            display: block;
         }
 
-        .content-wrap {
-            padding: 45px 55px;
+        .content {
+            padding: 40px 50px;
             display: flex;
             align-items: center;
         }
 
-        .goal-area {
+        .main-stats {
             flex: 1;
-            padding-right: 45px;
-            display: flex;
-            flex-direction: column;
+            padding-right: 40px;
         }
 
-        #display-text { 
-            font-size: 15px; 
-            font-weight: 800; 
+        #campaign-label { 
+            font-size: 14px; 
+            font-weight: 700; 
             color: #ccc; 
             text-transform: uppercase; 
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             margin-bottom: 15px;
         }
 
-        .bar-container {
+        /* Progress Bar */
+        .progress-track {
             position: relative;
             width: 100%;
             height: 75px; 
             background: #f0f0f0;
-            border-radius: 37px;
+            border-radius: 38px;
             overflow: hidden;
         }
 
-        .pulse-active {
-            animation: conversionPulse 0.8s ease-in-out;
-        }
-
-        .bar-fill {
+        .progress-fill {
             height: 100%;
             width: 0%;
             background: #58b622; 
             transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .bar-text {
+        .progress-text {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 35px;
+            padding: 0 30px;
             box-sizing: border-box;
             pointer-events: none;
         }
 
-        #current-count { font-size: 44px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #goal-total { font-size: 22px; font-weight: 900; color: #333; }
+        #current-val { font-size: 44px; font-weight: 900; color: #ffffff; }
+        #goal-val { font-size: 22px; font-weight: 900; color: #333; }
 
-        .footer-text { 
+        .footer { 
             margin-top: 15px; 
             font-size: 13px; 
-            font-weight: 800; 
+            font-weight: 700; 
             color: #bbb; 
             text-transform: uppercase;
         }
 
-        .qr-column {
+        /* QR Section */
+        .qr-section {
             width: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
-        #creator-name { 
+        #creator-code { 
             font-size: 18px; 
             font-weight: 900; 
             color: #58b622; 
-            text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            text-align: center;
         }
 
-        .qr-holder {
+        .qr-border {
             background: #ffffff;
-            padding: 12px;
+            padding: 10px;
             border-radius: 20px;
             border: 3px solid #58b622;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
         }
 
-        .qr-label {
-            font-size: 12px; 
-            font-weight: 900; 
-            color: #58b622; 
-            text-transform: uppercase;
-        }
-
-        #qrcode-canvas img { display: block; }
+        .qr-msg { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="container" id="main-container">
-    <div class="banner-header">
-        <img class="hf-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NTQgMTMzIj48cGF0aCBkPSJNNTQuNSA5OC43Yy00LjMgMC04LjItLjgtMTEuNy0yLjMtMy41LTEuNS02LjQtMy43LTguOC02LjYtMi40LTIuOS00LjItNi41LTUuNS0xMC43LTEuMy00LjItMi05LTItMTQuMyAwLTUuMy43LTEwIDItMTQuMSAxLjMtNC4xIDMuMi03LjYgNS41LTEwLjUgMi40LTIuOSA1LjMtNS4xIDguOC02LjYgMy41LTEuNSA3LjQtMi4yIDExLjctMi4yczguMi43IDExLjcgMi4yYzMuNSAxLjUgNi40IDMuNyA4LjggNi42IDIuNCAyLjkgNC4yIDYuNCA1LjUgMTAuNSAxLjMgNC4xIDIgOC44IDIgMTQuMSAwIDUuMy0uNyAxMC4xLTIgMTQuM3MtMy4yIDcuOC01LjUgMTAuN2MtMi40IDIuOS01LjMgNS4xLTguOC02LjYtMy41LTEuNS03LjQtMi4zLTExLjctMi4zem0wLTExLjNjMi40IDAgNC42LS41IDYuNS0xLjUgMS45LTEgMy41LTIuNSA0LjgtNC40IDEuMy0xLjkgMi4zLTQuMyAzLTcuMS43LTIuOCAxLTUuOSAxLTkuNSAwLTMuNi0uMy02LjctMS05LjUtLjctMi44LTEuNy01LjItMy03LjEtMS4zLTEuOS0yLjktMy40LTQuOC00LjQtMS45LTEtNC4xLTEuNS02LjUtMS41cy00LjYuNS02LjUgMS41Yy0xLjkgMS0zLjUtMi41LTQuOC00LjQtMS4zLTEuOS0yLjMtNC4zLTMtNy4xLS43LTIuOC0xLTUuOS0xLTkuNSAwLTMuNi4zLTIuOCAxLTUuMiAzLTcuMSAxLjMtMS45IDIuOS0zLjQgNC44LTQuNCAxLjktMSAzLjUuNyAxLjUtNi41IDEuNXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMTI0LjIgOTcuNFYzMS4zaDEwLjl2NjYuMWgtMTAuOXpNMTE3LjkgOTcuNFYzMS4zaDEwLjl2NjYuMWgtMTAuOXpNMjI0LjIgOTguN2MtNC4zIDAtOC4yLS44LTExLjctMi4zLTMuNS0xLjUtNi40LTMuNy04LjgtNi42LTIuNC0yLjktNC4yLTYuNS01LjUtMTAuNy0xLjMtNC4yLTItOS0yLTE0LjMgMC01LjMuNy0xMCAyLTE0LjEgMS4zLTQuMSAzLjItNy42IDUuNS0xMC41IDIuNC0yLjkgNS4zLTUuMSA4LjgtNi42IDMuNS0xLjUgNy40LTIuMiAxMS43LTIuMnM4LjIuNyAxMS43IDIuMmMzLjUgMS41IDYuNCAzLjcgOC44IDYuNiAyLjQgMi45IDQuMiA2LjQgNS41IDEwLjUgMS4zIDQuMSAyIDguOCAyIDE0LjEgMCA1LjMtLjcgMTAuMS0yIDE0LjNzLTMuMiA3LjgtNS41IDEwLjdjLTIuNCAyLjktNS4zIDUuMS04LjgtNi42LTMuNS0xLjUtNy40LTIuMy0xMS43LTIuM3ptMC0xMS4zYzIuNCAwIDQuNi0uNSA2LjUtMS41IDEuOS0xIDMuNS0yLjUgNC44LTQuNCAxLjMtMS45IDIuMy00LjMgMy03LjEuNy0yLjggMS01LjkgMS05LjUgMC0zLjYtLjMtNi43LTEtOS41LS43LTIuOC0xLjctNS4yLTMtNy4xLTEuMy0xLjktMi45LTMuNC00LjgtNC40LTEuOS0xLTQuMS0xLjUtNi41LTEuNXMtNC42LjUtNi41IDEuNWMtMS45IDEtMy41IDIuNS00LjgtNC40LTEuMy0xLjkgMi4zLTQuMyAzLTcuMS43LTIuOCAxLTUuOSAxLTkuNSAwLTMuNi4zLTIuOCAxLTUuMiAzLTcuMSAxLjMtMS45IDIuOS0zLjQgNC44LTQuNCAxLjktMSAzLjUuNyAxLjUtNi41IDEuNXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzA0LjYgMzEuM2gyNy44djkuOWgtMTYuOXYxNi4xaDE1LjN2OS45aC0xNS4zdjMwLjJoLTEwLjlWMzEuM3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzYzLjMgOTcuNFYzMS4zaDEwLjl2MjYuN2wxNi4xLTI2LjdoMTIuNWwtMTguNCAyOS44IDE5LjUgMzYuM2gtMTIuNGwtMTQuMy0yNy40LTMgNS4xdjIyLjNoLTEwLjl6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTQzNC42IDk4LjdjLTQuMSAwLTcuOC0uOC0xMS0yLjQtMy4yLTEuNi01LjgtMy45LTcuOC02LjktMi0zLTMtNi42LTMtMTAuOFYzMS4zaDEwLjl2NDZjMCAyLjUuNSA0LjYgMS42IDYuMyAxLjEgMS43IDIuNyAyLjYgNC45IDIuNnMzLjgtLjkgNC45LTIuNmMxLjEtMS43IDEuNi0zLjggMS42LTYuM1YzMS4zaDEwLjl2NDcuM2MwIDQuMi0xIDcuOC0zIDEwLjgtMiAzLTQuNiA1LjMtNy44IDYuOS0zLjQgMS42LTcuMiAyLjQtMTEuMiAyLjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTcyLjIgMTMuNWMtMy4xIDMuNS01LjkgNy40LTguMyAxMS42LTIuNSA0LjMtNC41IDguOS02IDEzLjctMS41LTQuOC0zLjUtOS40LTYtMTMuNy0yLjQtNC4yLTUuMi04LjEtOC4zLTExLjZDMzUuNSA1IDI1LjEuNCAxMy41LjR2MTMyLjJjMTEuNiAwIDIyLTQuNiAzMC4xLTEzLjEgMy4xLTMuNSA1LjktNy40IDguMy0xMS42IDIuNS00LjMgNC41LTguOSA2LTEzLjcgMS41IDQuOCAzLjUgOS40IDYgMTMuNyAyLjQgNC4yIDUuMiA4LjEgOC4zIDExLjYgOC4xIDguNSAxOC41IDEzLjEgMzAuMSAxMy4xVl40Yy0xMS42IDAtMjIsNC42LTMwLjEgMTMuMXoiIGZpbGw9IiM5MWQ0MDAiLz48L3N2Zz4=" alt="HelloFresh Logo">
+<div class="widget-box">
+    <div class="brand-header">
+        <img class="hf-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png" alt="HelloFresh">
     </div>
 
-    <div class="content-wrap">
-        <div class="goal-area">
-            <div id="display-text">Campaign Goal</div>
-            <div class="bar-container" id="bar-outer">
-                <div id="bar" class="bar-fill"></div>
-                <div class="bar-text">
-                    <span id="current-count">0</span>
-                    <span id="goal-total">Goal: 0</span>
+    <div class="content">
+        <div class="main-stats">
+            <div id="campaign-label">Campaign Progress</div>
+            <div class="progress-track">
+                <div id="bar" class="progress-fill"></div>
+                <div class="progress-text">
+                    <span id="current-val">0</span>
+                    <span id="goal-val">GOAL: 0</span>
                 </div>
             </div>
-            <div class="footer-text">Boxes Tracked This Month</div>
+            <div class="footer">Boxes Tracked This Month</div>
         </div>
 
-        <div class="qr-column" id="qr-wrapper" style="visibility: hidden;">
-            <span id="creator-name"></span>
-            <div class="qr-holder">
-                <div id="qrcode-canvas"></div>
+        <div class="qr-section" id="qr-wrap" style="visibility: hidden;">
+            <span id="creator-code"></span>
+            <div class="qr-border">
+                <div id="qrcode"></div>
             </div>
-            <span class="qr-label">Scan Me</span>
+            <span class="qr-msg">Scan Me</span>
         </div>
     </div>
 </div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    const URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     
-    let qrGenerator = null;
-    let lastCount = -1;
+    let qr = null;
+    let last = -1;
 
-    function fireConfetti() {
-        confetti({
-            particleCount: 150, spread: 70, origin: { y: 0.6 },
-            colors: ['#58b622', '#ffffff', '#91d400']
-        });
-    }
-
-    async function updateWidget() {
+    async function sync() {
         try {
-            const response = await fetch(`${API_URL}?creator=${creator}`);
-            const data = await response.json();
+            const res = await fetch(`${URL}?creator=${creator}`);
+            const data = await res.json();
             
-            const currentCount = parseInt(data.current);
-            const goalTotal = parseInt(data.goal);
-            const percent = (currentCount / goalTotal) * 100;
+            const curr = parseInt(data.current);
+            const goal = parseInt(data.goal);
+            const pct = (curr / goal) * 100;
 
-            if (lastCount !== -1 && currentCount > lastCount) {
-                fireConfetti();
-                const outer = document.getElementById('bar-outer');
-                outer.classList.remove('pulse-active');
-                void outer.offsetWidth; 
-                outer.classList.add('pulse-active');
+            if (last !== -1 && curr > last) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
             }
-            lastCount = currentCount;
+            last = curr;
 
-            document.getElementById('display-text').innerText = data.text;
-            document.getElementById('creator-name').innerText = creator;
-            document.getElementById('current-count').innerText = currentCount;
-            document.getElementById('goal-total').innerText = "Goal: " + goalTotal;
-            document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
+            document.getElementById('campaign-label').innerText = data.text;
+            document.getElementById('creator-code').innerText = creator;
+            document.getElementById('current-val').innerText = curr;
+            document.getElementById('goal-val').innerText = "GOAL: " + goal;
+            document.getElementById('bar').style.width = Math.min(pct, 100) + "%";
 
-            if (data.link && data.link.trim() !== "") {
-                const wrapper = document.getElementById('qr-wrapper');
-                const container = document.getElementById('qrcode-canvas');
-                wrapper.style.visibility = "visible";
-                
-                if (!qrGenerator) {
-                    qrGenerator = new QRCode(container, {
-                        text: data.link.trim(),
-                        width: 90, height: 90,
-                        colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H
+            if (data.link) {
+                document.getElementById('qr-wrap').style.visibility = "visible";
+                if (!qr) {
+                    qr = new QRCode(document.getElementById('qrcode'), {
+                        text: data.link.trim(), width: 90, height: 90
                     });
                 } else {
-                    qrGenerator.clear();
-                    qrGenerator.makeCode(data.link.trim());
+                    qr.makeCode(data.link.trim());
                 }
             }
-        } catch (e) { console.error("Sync error", e); }
+        } catch (e) { console.error(e); }
     }
 
-    updateWidget();
-    setInterval(updateWidget, 30000);
+    sync();
+    setInterval(sync, 30000); // 30s check
 </script>
 
 </body>
