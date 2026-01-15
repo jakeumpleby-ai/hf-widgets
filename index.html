@@ -99,9 +99,9 @@
             pointer-events: none;
         }
 
-        /* Added "Boxes" label to the condensed tracker */
+        /* Updated "First Boxes" label inside the condensed tracker */
         #current-count { font-size: 52px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #current-count::after { content: ' Boxes'; font-size: 18px; font-weight: 700; opacity: 0.9; }
+        #current-count::after { content: ' First Boxes'; font-size: 16px; font-weight: 700; opacity: 0.9; }
         
         #goal-total { font-size: 26px; font-weight: 900; color: #333; }
 
@@ -116,13 +116,8 @@
             line-height: 1.4;
         }
 
-        .footer-text { 
-            margin-top: 8px; 
-            font-size: 11px; 
-            font-weight: 700; 
-            color: #ccc; 
-            text-transform: uppercase;
-        }
+        /* Removed "First Boxes" text at the bottom per request */
+        .footer-text { display: none; }
 
         /* LARGER QR SECTION */
         .qr-section {
@@ -177,7 +172,6 @@
                 </div>
             </div>
             <div id="campaign-label"></div>
-            <div class="footer-text">First Boxes</div>
         </div>
 
         <div class="qr-section" id="qr-ui" style="visibility: hidden;">
@@ -234,7 +228,7 @@
     }
 
     update();
-    setInterval(update, 30000);
+    setInterval(update, 30000); // 30-second rapid sync
 </script>
 
 </body>
