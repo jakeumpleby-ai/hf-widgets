@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body { 
             background: transparent; 
@@ -14,134 +14,110 @@
             font-family: 'Inter', sans-serif;
         }
         
-        /* Fixed 500x200 container */
-        .container { 
-            width: 500px; 
+        /* 500x200 footprint */
+        .widget-box {
+            width: 500px;
             height: 200px;
-            background: #ffffff; 
-            padding: 25px 35px; 
-            border-radius: 24px; 
-            box-sizing: border-box;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            border-bottom: 10px solid #58b622;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        /* Top Header: Campaign Text and Creator */
-        .header {
+        /* The Main Label (Amazing Deal | jake) */
+        .top-info {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        #display-text { font-size: 16px; font-weight: 700; color: #555; text-transform: uppercase; }
+        #creator-name { font-size: 16px; font-weight: 900; color: #58b622; text-transform: lowercase; }
+
+        /* The Condensed Bar */
+        .progress-wrapper {
+            position: relative;
+            width: 100%;
+            height: 70px; /* Thicker, condensed look */
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #58b622; /* Solid HelloFresh Green */
+            transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            display: flex;
+            align-items: center;
+        }
+
+        /* Overlay Text (The "7" and the "Goal: 10") */
+        .bar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            pointer-events: none; /* Let clicks pass through */
         }
 
-        #display-text {
-            font-size: 14px;
-            font-weight: 800;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        #creator-name {
-            font-size: 22px;
+        #current-count {
+            font-size: 38px;
             font-weight: 900;
-            color: #58b622;
+            color: #ffffff; /* White text on green bar */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* The Progress Bar Area */
-        .progress-section {
-            width: 100%;
+        #goal-total {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333; /* Darker text on grey background */
         }
 
-        .progress-bg { 
-            background: #f2f2f2; 
-            height: 44px; 
-            border-radius: 22px; 
-            overflow: hidden; 
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
-        }
-
-        .progress-fill { 
-            background: linear-gradient(90deg, #58b622, #96d96e); 
-            height: 100%; 
-            width: 0%; 
-            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* The Stats: Left (Current) and Right (Goal) */
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 5px;
-        }
-
-        .stat-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-group.right {
-            text-align: right;
-        }
-
-        #current-count { 
-            font-size: 58px; 
-            font-weight: 900;
-            color: #111;
-            line-height: 1;
-        }
-
-        #goal-total { 
-            font-size: 58px; 
-            font-weight: 900;
-            color: #58b622;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 13px;
+        /* Subtext below the bar */
+        .sub-label {
+            margin-top: 10px;
+            font-size: 12px;
             font-weight: 700;
             color: #bbb;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
+<div class="widget-box">
+    <div class="top-info">
         <span id="display-text">Amazing Deal</span>
         <span id="creator-name"></span>
     </div>
 
-    <div class="progress-section">
-        <div class="progress-bg">
-            <div id="bar" class="progress-fill"></div>
+    <div class="progress-wrapper">
+        <div id="bar" class="progress-fill"></div>
+        <div class="bar-overlay">
+            <span id="current-count">0</span>
+            <span id="goal-total">Goal: 0</span>
         </div>
     </div>
 
-    <div class="footer">
-        <div class="stat-group">
-            <span id="current-count">0</span>
-            <span class="stat-label">Boxes Tracked</span>
-        </div>
-        
-        <div class="stat-group right">
-            <span id="goal-total">0</span>
-            <span class="stat-label">Goal Target</span>
-        </div>
-    </div>
+    <div class="sub-label">Boxes Tracked This Month</div>
 </div>
 
 <script>
-    /* KEEPING YOUR WORKING LOGIC UNTOUCHED
-    */
+    // YOUR ORIGINAL WORKING CODE
     const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
@@ -155,9 +131,9 @@
             document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
             document.getElementById('current-count').innerText = data.current;
-            document.getElementById('goal-total').innerText = data.goal;
+            document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
-        } catch (e) { console.error("Update Error:", e); }
+        } catch (e) { console.error("Error", e); }
     }
 
     updateWidget();
