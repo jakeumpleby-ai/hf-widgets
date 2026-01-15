@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-            color: white; 
             background: transparent; 
             overflow: hidden; 
             margin: 0; 
@@ -12,121 +11,120 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
         
-        .widget-container {
-            width: 400px; /* Slightly wider for a more cinematic look */
-            text-align: center;
-        }
-
-        /* Video Scaling - Ensures Slide1 fills the width perfectly */
-        #bg-video {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: -10px; /* Overlaps slightly for a seamless look */
-            filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5));
-        }
-
+        /* Fixed dimensions: 500px by 200px */
         .container { 
-            background: rgba(15, 15, 15, 0.95); 
-            padding: 25px; 
-            border-radius: 15px; 
-            border-bottom: 8px solid #58b622; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            position: relative;
-            z-index: 2;
+            width: 500px; 
+            height: 200px;
+            background: #ffffff; /* Clean white background */
+            padding: 30px; 
+            border-radius: 24px; 
+            box-sizing: border-box;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-bottom: 10px solid #58b622; /* Signature HF Green */
         }
 
-        .label { 
-            font-size: 14px; 
-            font-weight: 800; 
-            margin-bottom: 15px; 
-            text-transform: uppercase; 
+        .header {
             display: flex;
             justify-content: space-between;
-            letter-spacing: 1.5px;
-            color: #eee;
+            align-items: baseline;
         }
 
+        #display-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #creator-name {
+            font-size: 20px;
+            font-weight: 900;
+            color: #58b622;
+        }
+
+        /* The Progress Bar */
         .progress-bg { 
-            background: #1a1a1a; 
-            height: 32px; /* Thicker bar for better visibility */
-            border-radius: 16px; 
+            background: #f0f0f0; 
+            height: 40px; 
+            border-radius: 20px; 
             overflow: hidden; 
-            border: 1px solid #333;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .progress-fill { 
-            background: linear-gradient(90deg, #58b622, #a3e635); 
+            background: linear-gradient(90deg, #58b622, #96d96e); 
             height: 100%; 
             width: 0%; 
-            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
         }
 
-        /* LARGE BRANDED STATS */
-        .stats { 
-            margin-top: 20px; 
+        /* The Stats Section */
+        .footer {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
+        }
+
+        .main-stat {
+            display: flex;
+            flex-direction: column;
         }
 
         #current-count { 
-            font-size: 48px; /* Massive primary number */
+            font-size: 52px; 
             font-weight: 900;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(88, 182, 34, 0.4);
+            color: #222;
+            line-height: 0.9;
         }
 
-        .count-subtext {
+        .stat-label {
             font-size: 14px;
+            font-weight: 700;
             color: #888;
-            display: block;
             text-transform: uppercase;
-            font-weight: bold;
         }
 
         #goal-total { 
-            font-size: 22px; 
+            font-size: 18px; 
             color: #58b622;
-            font-weight: 800;
-            background: rgba(88, 182, 34, 0.1);
-            padding: 5px 12px;
-            border-radius: 8px;
+            font-weight: 700;
+            background: #f1f8ed;
+            padding: 6px 14px;
+            border-radius: 10px;
         }
-
-        #creator-name { color: #58b622; }
     </style>
 </head>
 <body>
 
-<div class="widget-container">
-    <video id="bg-video" autoplay loop muted playsinline>
-        <source src="Slide1.webm" type="video/webm">
-    </video>
+<div class="container">
+    <div class="header">
+        <span id="display-text">Campaign Goal</span>
+        <span id="creator-name"></span>
+    </div>
 
-    <div class="container">
-        <div class="label">
-            <span id="display-text">Campaign Goal</span>
-            <span id="creator-name"></span>
+    <div class="progress-bg">
+        <div id="bar" class="progress-fill"></div>
+    </div>
+
+    <div class="footer">
+        <div class="main-stat">
+            <span id="current-count">0</span>
+            <span class="stat-label">Boxes Tracked</span>
         </div>
-        <div class="progress-bg">
-            <div id="bar" class="progress-fill"></div>
-        </div>
-        <div class="stats">
-            <div>
-                <span id="current-count">0</span>
-                <span class="count-subtext">Boxes Tracked</span>
-            </div>
-            <span id="goal-total">Goal: 0</span>
-        </div>
+        <div id="goal-total">Goal: 0</div>
     </div>
 </div>
 
 <script>
-    // Keeping your working logic 100% intact
+    // YOUR ORIGINAL WORKING CODE - DO NOT CHANGE
     const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
@@ -142,9 +140,7 @@
             document.getElementById('current-count').innerText = data.current;
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
-        } catch (e) {
-            console.error("Data error:", e);
-        }
+        } catch (e) { console.error("Update Error:", e); }
     }
 
     updateWidget();
