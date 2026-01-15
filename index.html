@@ -6,9 +6,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         @keyframes conversionPulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.03); filter: brightness(1.1); box-shadow: 0 0 25px rgba(88, 182, 34, 0.5); }
-            100% { transform: scale(1); filter: brightness(1); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); box-shadow: 0 0 30px rgba(88, 182, 34, 0.6); }
+            100% { transform: scale(1); }
         }
 
         body { 
@@ -31,25 +31,22 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
         /* HERO BRAND BANNER */
         .banner-header {
             width: 100%;
             background: #58b622; 
-            padding: 40px 0; /* Max prominence */
+            padding: 40px 0;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .hf-logo {
-            height: 70px; /* Dominant Scale */
+        .hf-logo-svg {
+            height: 65px;
             width: auto;
-            max-width: 85%;
-            filter: brightness(0) invert(1);
-            object-fit: contain;
+            fill: white; /* Forces the logo to be pure white */
         }
 
         .content-wrap {
@@ -102,7 +99,6 @@
             align-items: center;
             padding: 0 30px;
             box-sizing: border-box;
-            pointer-events: none;
         }
 
         #current-count { font-size: 42px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
@@ -130,7 +126,6 @@
             color: #58b622; 
             text-transform: uppercase;
             margin-bottom: 12px;
-            text-align: center;
         }
 
         .qr-holder {
@@ -144,25 +139,23 @@
             margin-bottom: 10px;
         }
 
-        .qr-label {
-            font-size: 12px; 
-            font-weight: 900; 
-            color: #58b622; 
-            text-transform: uppercase;
-        }
+        .qr-label { font-size: 12px; font-weight: 900; color: #58b622; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="container" id="main-container">
     <div class="banner-header">
-        <img src="logo.png" class="hf-logo" alt="HelloFresh Hero">
+        <svg class="hf-logo-svg" viewBox="0 0 100 35" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.5 25.4c-1.1 0-2.2-.2-3.2-.6-.9-.4-1.8-.9-2.5-1.6-.7-.7-1.3-1.6-1.7-2.6-.4-1-.6-2.1-.6-3.3s.2-2.3.6-3.3c.4-1 1-1.9 1.7-2.6.7-.7 1.6-1.2 2.5-1.6 1-.4 2.1-.6 3.2-.6s2.2.2 3.2.6c.9.4 1.8.9 2.5 1.6.7.7 1.3 1.6 1.7 2.6.4 1 .6 2.1.6 3.3s-.2 2.3-.6 3.3c-.4 1-1 1.9-1.7 2.6-.7.7-1.6 1.2-2.5 1.6-1 .4-2.1.6-3.2.6zm0-2.8c.7 0 1.3-.1 1.9-.4.6-.3 1.1-.7 1.5-1.2.4-.5.7-1.1.9-1.8.2-.7.3-1.5.3-2.3s-.1-1.6-.3-2.3c-.2-.7-.5-1.3-.9-1.8-.4-.5-.9-.9-1.5-1.2-.6-.3-1.2-.4-1.9-.4s-1.3.1-1.9.4c-.6.3-1.1.7-1.5 1.2-.4.5-.7 1.1-.9 1.8-.2.7-.3 1.5-.3 2.3s.1 1.6.3 2.3c.2.7.5 1.3.9 1.8.4.5.9.9 1.5 1.2.6.3 1.2.4 1.9.4zM32.4 25.1V8.5h2.8v16.6h-2.8zM40.8 25.1V8.5h2.8v16.6h-2.8zM57.4 25.4c-1.1 0-2.2-.2-3.2-.6-.9-.4-1.8-.9-2.5-1.6-.7-.7-1.3-1.6-1.7-2.6-.4-1-.6-2.1-.6-3.3s.2-2.3.6-3.3c.4-1 1-1.9 1.7-2.6.7-.7 1.6-1.2 2.5-1.6 1-.4 2.1-.6 3.2-.6s2.2.2 3.2.6c.9.4 1.8.9 2.5 1.6.7.7 1.3 1.6 1.7 2.6.4 1 .6 2.1.6 3.3s-.2 2.3-.6 3.3c-.4 1-1 1.9-1.7 2.6-.7.7-1.6 1.2-2.5 1.6-1 .4-2.1.6-3.2.6zm0-2.8c.7 0 1.3-.1 1.9-.4.6-.3 1.1-.7 1.5-1.2.4-.5.7-1.1.9-1.8.2-.7.3-1.5.3-2.3s-.1-1.6-.3-2.3c-.2-.7-.5-1.3-.9-1.8-.4-.5-.9-.9-1.5-1.2-.6-.3-1.2-.4-1.9-.4s-1.3.1-1.9.4c-.6.3-1.1.7-1.5 1.2-.4.5-.7 1.1-.9 1.8-.2.7-.3 1.5-.3 2.3s.1 1.6.3 2.3c.2.7.5 1.3.9 1.8.4.5.9.9 1.5 1.2.6.3 1.2.4 1.9.4zM77.5 8.5h7V11h-4.2v4.1h3.8v2.5h-3.8v7.6h-2.8V8.5zM92.2 25.1V8.5h2.8v6.7l4-6.7H102l-4.6 7.5 4.9 9.1h-3.1l-3.6-6.9-.8 1.3v5.6h-2.7z" />
+            <path d="M19.4 3.4c-.8.9-1.5 1.9-2.1 3-.6 1.1-1.1 2.3-1.5 3.5-.4-1.2-.9-2.4-1.5-3.5-.6-1.1-1.3-2.1-2.1-3C10.1 1.3 7.5.1 4.5.1v33.2c2.9 0 5.5-1.2 7.5-3.3.8-.9 1.5-1.9 2.1-3 .6-1.1 1.1-2.3 1.5-3.5.4 1.2.9 2.4 1.5 3.5.6 1.1 1.3 2.1 2.1 3 2 2.1 4.6 3.3 7.5 3.3V.1c-2.9 0-5.5 1.2-7.5 3.3z" fill="#91d400" />
+        </svg>
     </div>
 
     <div class="content-wrap">
         <div class="goal-area">
             <div id="display-text">Campaign Goal</div>
-            <div class="bar-container">
+            <div class="bar-container" id="bar-outer">
                 <div id="bar" class="bar-fill"></div>
                 <div class="bar-text">
                     <span id="current-count">0</span>
@@ -174,9 +167,7 @@
 
         <div class="qr-column" id="qr-wrapper" style="visibility: hidden;">
             <span id="creator-name"></span>
-            <div class="qr-holder">
-                <div id="qrcode-canvas"></div>
-            </div>
+            <div class="qr-holder"><div id="qrcode-canvas"></div></div>
             <span class="qr-label">Scan Me</span>
         </div>
     </div>
@@ -189,13 +180,10 @@
     
     let qrGenerator = null;
     let lastCount = -1;
-    let goalReached = false;
 
     function fireConfetti() {
         confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
+            particleCount: 150, spread: 70, origin: { y: 0.6 },
             colors: ['#58b622', '#ffffff', '#91d400']
         });
     }
@@ -204,24 +192,17 @@
         try {
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
-            
             const currentCount = parseInt(data.current);
             const goalTotal = parseInt(data.goal);
             const percent = (currentCount / goalTotal) * 100;
 
-            // Goal celebration logic
-            if (currentCount >= goalTotal && !goalReached) {
-                fireConfetti();
-                goalReached = true;
-            }
-
-            // Conversion pulse
+            // FIRE CONFETTI AND PULSE ON EVERY INCREASE
             if (lastCount !== -1 && currentCount > lastCount) {
-                const container = document.getElementById('main-container');
-                container.classList.remove('pulse-active');
-                void container.offsetWidth; 
-                container.classList.add('pulse-active');
-                if (currentCount < goalTotal) fireConfetti(); // Small burst for every box
+                fireConfetti();
+                const outer = document.getElementById('bar-outer');
+                outer.classList.remove('pulse-active');
+                void outer.offsetWidth;
+                outer.classList.add('pulse-active');
             }
             lastCount = currentCount;
 
@@ -231,28 +212,24 @@
             document.getElementById('goal-total').innerText = "Goal: " + goalTotal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
 
-            if (data.link && data.link.trim() !== "") {
+            if (data.link) {
                 const wrapper = document.getElementById('qr-wrapper');
                 wrapper.style.visibility = "visible";
-                
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(document.getElementById('qrcode-canvas'), {
-                        text: data.link.trim(),
-                        width: 90, height: 90,
-                        colorDark : "#000000", colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
+                        text: data.link.trim(), width: 90, height: 90,
+                        colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H
                     });
                 } else {
                     qrGenerator.clear();
                     qrGenerator.makeCode(data.link.trim());
                 }
             }
-        } catch (e) { console.error("Sync error", e); }
+        } catch (e) { console.error("Error", e); }
     }
 
     updateWidget();
     setInterval(updateWidget, 30000);
 </script>
-
 </body>
 </html>
