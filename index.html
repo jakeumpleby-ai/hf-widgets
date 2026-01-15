@@ -5,72 +5,203 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .widget-card { width: 720px; background: #ffffff; border-radius: 45px; box-shadow: 0 35px 90px rgba(0,0,0,0.22); display: flex; flex-direction: column; overflow: hidden; }
-        .brand-header { width: 100%; background: #58b622; padding: 15px 0; display: flex; justify-content: center; }
-        #main-logo { height: 125px; filter: brightness(0) invert(1); object-fit: contain; }
-        .content-wrap { padding: 35px 50px 45px; display: flex; align-items: center; justify-content: space-between; }
-        .goal-area { flex: 1; padding-right: 45px; display: flex; flex-direction: column; }
-        #creator-tag { font-size: 32px; font-weight: 900; color: #58b622; text-transform: uppercase; margin-bottom: 15px; }
-        .progress-track { position: relative; width: 100%; height: 115px; background: #f4f4f4; border-radius: 58px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; background: #58b622; transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .text-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 45px; box-sizing: border-box; }
-        .stat-stack { display: flex; flex-direction: column; align-items: center; line-height: 0.8; }
-        .big-number { font-size: 62px; font-weight: 900; color: #000000; }
-        .small-label { font-size: 16px; font-weight: 900; text-transform: uppercase; margin-top: 10px; color: #000000; }
-        #goal-label { opacity: 0.6; }
-        #campaign-label { margin-top: 22px; font-size: 18px; font-weight: 900; color: #000000; text-transform: uppercase; line-height: 1.3; }
-        .qr-section { width: 180px; display: flex; flex-direction: column; align-items: center; }
-        .qr-frame { background: #ffffff; padding: 12px; border-radius: 24px; border: 5px solid #58b622; }
-        .qr-instruction { font-size: 16px; font-weight: 900; color: #58b622; margin-top: 15px; text-transform: uppercase; }
+        body { 
+            background: transparent; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+        }
+        
+        .widget-card { 
+            width: 720px; 
+            background: #ffffff; 
+            border-radius: 45px; 
+            box-shadow: 0 35px 90px rgba(0,0,0,0.22); 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        .brand-header { 
+            width: 100%; 
+            background: #58b622; 
+            padding: 15px 0; 
+            display: flex; 
+            justify-content: center; 
+        }
+
+        #main-logo { 
+            height: 125px; 
+            filter: brightness(0) invert(1); 
+            object-fit: contain; 
+        }
+
+        .content-wrap { 
+            padding: 35px 50px 45px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+
+        .goal-area { 
+            flex: 1; 
+            padding-right: 45px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        #creator-tag { 
+            font-size: 32px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase; 
+            margin-bottom: 15px; 
+        }
+
+        .progress-track { 
+            position: relative; 
+            width: 100%; 
+            height: 90px; 
+            background: #f4f4f4; 
+            border-radius: 45px; 
+            overflow: hidden; 
+        }
+
+        .progress-fill { 
+            height: 100%; 
+            width: 0%; 
+            background: #58b622; 
+            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        }
+
+        /* NEW: Horizontal Alignment Inside Bar */
+        .text-overlay { 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 40px; 
+            box-sizing: border-box; 
+            pointer-events: none;
+        }
+
+        /* Fraction styling (Current/Goal) */
+        .ratio-text { 
+            font-size: 52px; 
+            font-weight: 900; 
+            color: #000; 
+            letter-spacing: -1px;
+        }
+
+        /* Label styling aligned to the right */
+        .bar-label { 
+            font-size: 24px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            color: #000; 
+            opacity: 0.85;
+        }
+
+        #campaign-label { 
+            margin-top: 20px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: #000; 
+            text-transform: uppercase; 
+            line-height: 1.3; 
+        }
+
+        .qr-section { 
+            width: 180px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .qr-frame { 
+            background: #ffffff; 
+            padding: 12px; 
+            border-radius: 24px; 
+            border: 5px solid #58b622; 
+        }
+
+        .qr-instruction { 
+            font-size: 16px; 
+            font-weight: 900; 
+            color: #58b622; 
+            margin-top: 15px; 
+            text-transform: uppercase; 
+        }
     </style>
 </head>
 <body>
+
 <div class="widget-card">
-    <div class="brand-header"><img id="main-logo" src="./logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png'"></div>
+    <div class="brand-header">
+        <img id="main-logo" src="./logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png'">
+    </div>
+
     <div class="content-wrap">
         <div class="goal-area">
             <div id="creator-tag"></div>
             <div class="progress-track">
                 <div id="bar" class="progress-fill"></div>
                 <div class="text-overlay">
-                    <div class="stat-stack"><span id="current-count" class="big-number">0</span><span class="small-label">First Boxes</span></div>
-                    <div class="stat-stack"><span id="goal-num" class="big-number">0</span><span class="small-label" id="goal-label">Goal</span></div>
+                    <div class="ratio-text">
+                        <span id="current">0</span>/<span id="total">0</span>
+                    </div>
+                    <div class="bar-label">First Boxes</div>
                 </div>
             </div>
             <div id="campaign-label"></div>
         </div>
+
         <div class="qr-section" id="qr-ui" style="visibility: hidden;">
             <div class="qr-frame"><div id="qrcode"></div></div>
             <span class="qr-instruction">Scan Me</span>
         </div>
     </div>
 </div>
+
 <script>
     const API = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     let qr = null; let last = -1;
+
     async function update() {
         try {
             const res = await fetch(`${API}?creator=${creator}`);
             const data = await res.json();
-            const curr = parseInt(data.current); const goal = parseInt(data.goal);
-            if (last !== -1 && curr > last) { confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] }); }
+            const curr = parseInt(data.current);
+            const goal = parseInt(data.goal);
+
+            if (last !== -1 && curr > last) {
+                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
+            }
             last = curr;
+
             document.getElementById('campaign-label').innerText = data.text;
             document.getElementById('creator-tag').innerText = creator;
-            document.getElementById('current-count').innerText = curr;
-            document.getElementById('goal-num').innerText = goal;
+            document.getElementById('current').innerText = curr;
+            document.getElementById('total').innerText = goal;
             document.getElementById('bar').style.width = Math.min((curr/goal)*100, 100) + "%";
+
             if (data.link) {
                 document.getElementById('qr-ui').style.visibility = "visible";
-                if (!qr) { qr = new QRCode(document.getElementById('qrcode'), { text: data.link.trim(), width: 140, height: 140 }); }
-                else { qr.makeCode(data.link.trim()); }
+                if (!qr) {
+                    qr = new QRCode(document.getElementById('qrcode'), { text: data.link.trim(), width: 140, height: 140 });
+                } else { qr.makeCode(data.link.trim()); }
             }
         } catch (e) { console.error(e); }
     }
     update(); setInterval(update, 30000);
 </script>
+
 </body>
 </html>
