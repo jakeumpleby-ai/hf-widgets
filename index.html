@@ -19,9 +19,9 @@
         .widget-card { 
             width: 720px; 
             background: #ffffff; 
-            border-radius: 40px; 
+            border-radius: 45px; 
             box-sizing: border-box;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+            box-shadow: 0 35px 90px rgba(0,0,0,0.22);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -37,7 +37,7 @@
         }
 
         #main-logo {
-            height: 120px; 
+            height: 125px; 
             width: auto;
             max-width: 95%;
             filter: brightness(0) invert(1); 
@@ -59,20 +59,20 @@
         }
 
         #creator-tag { 
-            font-size: 28px; 
+            font-size: 32px; /* Sized up */
             font-weight: 900; 
             color: #58b622; 
             text-transform: uppercase;
             margin-bottom: 15px;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
         }
 
         .progress-track {
             position: relative;
             width: 100%;
-            height: 100px; /* Slightly taller for the double-stack text */
+            height: 110px; /* Taller to support larger text */
             background: #f4f4f4;
-            border-radius: 50px;
+            border-radius: 55px;
             overflow: hidden;
         }
 
@@ -89,42 +89,42 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 40px;
+            padding: 0 45px;
             box-sizing: border-box;
             pointer-events: none;
         }
 
-        /* Stat Stack: Number on top, Label on bottom */
         .stat-stack {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centers the label under the number */
-            line-height: 0.9;
+            align-items: center;
+            line-height: 0.85;
         }
 
         .big-number {
-            font-size: 52px; 
+            font-size: 58px; /* Increased size */
             font-weight: 900;
             color: #000000;
         }
 
         .small-label {
-            font-size: 13px; 
-            font-weight: 800; 
+            font-size: 16px; /* Sized up from 13px */
+            font-weight: 900; 
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
         }
 
-        #current-count { color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #first-boxes-label { color: #ffffff; opacity: 0.9; }
+        /* Black text for the condensed tracker side */
+        #current-count { color: #000000; }
+        #first-boxes-label { color: #000000; }
         
         #goal-num { color: #000000; }
         #goal-label { color: #888; }
 
         #campaign-label { 
-            margin-top: 18px;
-            font-size: 16px; 
+            margin-top: 20px;
+            font-size: 18px; /* Sized up */
             font-weight: 900; 
             color: #000000; 
             text-transform: uppercase; 
@@ -133,7 +133,7 @@
         }
 
         .qr-section {
-            width: 170px;
+            width: 175px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -148,10 +148,10 @@
         }
 
         .qr-instruction { 
-            font-size: 14px; 
+            font-size: 16px; /* Sized up */
             font-weight: 900; 
             color: #58b622; 
-            margin-top: 12px; 
+            margin-top: 15px; 
             text-transform: uppercase; 
         }
     </style>
@@ -223,7 +223,7 @@
                 document.getElementById('qr-ui').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
-                        text: data.link.trim(), width: 130, height: 130
+                        text: data.link.trim(), width: 140, height: 140
                     });
                 } else {
                     qr.makeCode(data.link.trim());
