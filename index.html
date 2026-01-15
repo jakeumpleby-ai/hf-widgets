@@ -3,14 +3,14 @@
 <head>
     <style>
         /* Transparent background for OBS */
-        body { font-family: 'Helvetica', sans-serif; color: white; background: transparent; overflow: hidden; margin: 0; padding: 20px; }
+        body { font-family: 'Helvetica', sans-serif; color: white; background: transparent; overflow: hidden; margin: 0; padding: 10px; }
         
         .container { 
             width: 350px; 
             background: rgba(0,0,0,0.8); 
             padding: 15px; 
             border-radius: 12px; 
-            border-left: 5px solid #58b622; 
+            border-left: 5px solid #58b622; /* HF Green */
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -36,6 +36,7 @@
             height: 100%; 
             width: 0%; 
             transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67); 
+            box-shadow: 0 0 10px #58b622;
         }
 
         .stats { 
@@ -66,7 +67,7 @@
 </div>
 
 <script>
-    // YOUR GOOGLE APPS SCRIPT URL
+    // Your specific Google Apps Script URL
     const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
 
     // Get ?creator=NAME from the URL
@@ -78,25 +79,21 @@
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
 
-            // Calculate percentage
             const percent = (data.current / data.goal) * 100;
             
-            // Update the UI elements
             document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
             document.getElementById('current-count').innerText = data.current + " boxes";
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
-            
-            console.log("Update successful for: " + creator);
         } catch (e) {
-            console.error("Error fetching data from Google Script", e);
+            console.error("Error fetching data - make sure your Sheet is set to 'Anyone with link'", e);
         }
     }
 
-    // Refresh every 60 seconds
+    // Refresh every 2 minutes (120000ms) to stay within Google's free quotas
     updateWidget();
-    setInterval(updateWidget, 60000);
+    setInterval(updateWidget, 120000);
 </script>
 
 </body>
