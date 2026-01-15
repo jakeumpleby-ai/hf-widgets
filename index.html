@@ -16,7 +16,7 @@
             overflow: hidden;
         }
         
-        .container { 
+        .widget-container { 
             width: 700px; 
             background: #ffffff; 
             border-radius: 40px; 
@@ -26,34 +26,35 @@
             overflow: hidden;
         }
 
-        /* FULL WIDTH SEAMLESS GREEN BANNER */
-        .banner {
+        .brand-header {
             width: 100%;
             background: #58b622; 
-            padding: 50px 0; 
+            padding: 55px 0; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* High-res PNG logo for maximum stability */
-        .hf-logo {
-            height: 80px; 
+        /* Scalable Logo Styling */
+        #main-logo {
+            height: 90px; 
             width: auto;
+            max-width: 85%;
+            object-fit: contain;
         }
 
-        .content {
-            padding: 40px 50px;
+        .content-area {
+            padding: 45px 55px;
             display: flex;
             align-items: center;
         }
 
-        .stats {
+        .goal-section {
             flex: 1;
-            padding-right: 40px;
+            padding-right: 45px;
         }
 
-        #goal-label { 
+        #campaign-title { 
             font-size: 15px; 
             font-weight: 700; 
             color: #ccc; 
@@ -71,7 +72,7 @@
             overflow: hidden;
         }
 
-        .fill {
+        .fill-bar {
             height: 100%;
             width: 0%;
             background: #58b622; 
@@ -89,8 +90,8 @@
             pointer-events: none;
         }
 
-        #current { font-size: 50px; font-weight: 900; color: #ffffff; }
-        #total { font-size: 24px; font-weight: 900; color: #333; }
+        #current-count { font-size: 50px; font-weight: 900; color: #ffffff; }
+        #goal-total { font-size: 24px; font-weight: 900; color: #333; }
 
         .footer { 
             margin-top: 15px; 
@@ -100,15 +101,14 @@
             text-transform: uppercase;
         }
 
-        /* QR Section */
-        .qr-side {
+        .qr-column {
             width: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        #creator-id { 
+        #creator-code { 
             font-size: 18px; 
             font-weight: 900; 
             color: #58b622; 
@@ -116,76 +116,78 @@
             text-transform: uppercase;
         }
 
-        .qr-wrap {
+        .qr-holder {
             background: #ffffff;
             padding: 10px;
             border-radius: 20px;
             border: 3px solid #58b622;
         }
 
-        .qr-text { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
+        .qr-label { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="banner">
-        <img class="hf-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png" alt="HelloFresh">
+<div class="widget-container">
+    <div class="brand-header">
+        <img id="main-logo" src="./logo.png" alt="HelloFresh Logo">
     </div>
 
-    <div class="content">
-        <div class="stats">
-            <div id="goal-label">Campaign Progress</div>
+    <div class="content-area">
+        <div class="goal-section">
+            <div id="campaign-title">Sponsorship Goal</div>
             <div class="progress-bar">
-                <div id="bar" class="fill"></div>
+                <div id="bar" class="fill-bar"></div>
                 <div class="text-overlay">
-                    <span id="current">0</span>
-                    <span id="total">GOAL: 0</span>
+                    <span id="current-count">0</span>
+                    <span id="goal-total">GOAL: 0</span>
                 </div>
             </div>
             <div class="footer">Boxes Tracked This Month</div>
         </div>
 
-        <div class="qr-side" id="qr-container" style="visibility: hidden;">
-            <span id="creator-id"></span>
-            <div class="qr-wrap">
+        <div class="qr-column" id="qr-ui" style="visibility: hidden;">
+            <span id="creator-code"></span>
+            <div class="qr-holder">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-text">Scan Me</span>
+            <span class="qr-label">Scan Me</span>
         </div>
     </div>
 </div>
 
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    const API = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     
     let qr = null;
     let last = -1;
 
+    // Cache Buster for the logo
+    document.getElementById('main-logo').src = "./logo.png?v=" + new Date().getTime();
+
     async function update() {
         try {
-            const res = await fetch(`${API_URL}?creator=${creator}`);
+            const res = await fetch(`${API}?creator=${creator}`);
             const data = await res.json();
             const curr = parseInt(data.current);
             const goal = parseInt(data.goal);
             const pct = (curr / goal) * 100;
 
-            // Trigger confetti every time the count increases
             if (last !== -1 && curr > last) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
+                confetti({ particleCount: 180, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
             }
             last = curr;
 
-            document.getElementById('goal-label').innerText = data.text;
-            document.getElementById('creator-id').innerText = creator;
-            document.getElementById('current').innerText = curr;
-            document.getElementById('total').innerText = "GOAL: " + goal;
+            document.getElementById('campaign-title').innerText = data.text;
+            document.getElementById('creator-code').innerText = creator;
+            document.getElementById('current-count').innerText = curr;
+            document.getElementById('goal-total').innerText = "GOAL: " + goal;
             document.getElementById('bar').style.width = Math.min(pct, 100) + "%";
 
             if (data.link) {
-                document.getElementById('qr-container').style.visibility = "visible";
+                document.getElementById('qr-ui').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
                         text: data.link.trim(), width: 100, height: 100
@@ -198,7 +200,7 @@
     }
 
     update();
-    setInterval(update, 30000); // Check every 30 seconds
+    setInterval(update, 30000); // 30-second sync
 </script>
 
 </body>
