@@ -19,7 +19,7 @@
             width: 580px; 
             height: 180px;
             background: #ffffff; 
-            padding: 25px 30px; 
+            padding: 20px 30px; 
             border-radius: 24px; 
             box-sizing: border-box;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -33,14 +33,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-right: 20px;
+            padding-right: 30px;
         }
 
-        /* Cohesive Header Layout */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
             margin-bottom: 12px;
         }
 
@@ -52,13 +48,7 @@
             letter-spacing: 1px; 
         }
 
-        #creator-name { 
-            font-size: 20px; 
-            font-weight: 900; 
-            color: #58b622; 
-            text-transform: uppercase;
-        }
-
+        /* Progress Bar Styling */
         .bar-container {
             position: relative;
             width: 100%;
@@ -71,7 +61,7 @@
         .bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #58b622, #96d96e); 
+            background: #58b622; 
             transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -91,21 +81,30 @@
 
         .footer-text { margin-top: 10px; font-size: 10px; font-weight: 700; color: #ccc; text-transform: uppercase; }
 
-        /* QR Section with Green Glow */
+        /* Right Sidebar: Creator Code -> QR -> Scan Me */
         .qr-section {
-            width: 100px;
+            width: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
+        #creator-name { 
+            font-size: 16px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
         .qr-holder {
             background: #ffffff;
-            padding: 8px;
+            padding: 6px;
             border-radius: 12px;
-            /* Branded Green Glow */
-            box-shadow: 0 0 15px rgba(88, 182, 34, 0.4);
+            box-shadow: 0 0 15px rgba(88, 182, 34, 0.4); /* Branded Glow */
             border: 2px solid rgba(88, 182, 34, 0.2);
             display: flex;
             justify-content: center;
@@ -130,7 +129,6 @@
     <div class="goal-area">
         <div class="header">
             <span id="display-text">Campaign Goal</span>
-            <span id="creator-name"></span>
         </div>
 
         <div class="bar-container">
@@ -144,6 +142,7 @@
     </div>
 
     <div class="qr-section" id="qr-wrapper" style="visibility: hidden;">
+        <span id="creator-name"></span>
         <div class="qr-holder">
             <div id="qrcode-canvas"></div>
         </div>
@@ -178,8 +177,8 @@
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(container, {
                         text: data.link.trim(),
-                        width: 72,
-                        height: 72,
+                        width: 70,
+                        height: 70,
                         colorDark : "#000000",
                         colorLight : "#ffffff",
                         correctLevel : QRCode.CorrectLevel.H
