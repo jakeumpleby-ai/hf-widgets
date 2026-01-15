@@ -17,7 +17,7 @@
         }
         
         .widget-card { 
-            width: 700px; 
+            width: 720px; 
             background: #ffffff; 
             border-radius: 40px; 
             box-sizing: border-box;
@@ -27,54 +27,68 @@
             overflow: hidden;
         }
 
-        /* DOMINANT BRAND BANNER */
+        /* MASSIVE BRAND HEADER */
         .brand-header {
             width: 100%;
             background: #58b622; 
-            padding: 55px 0; /* Deep vertical space */
+            padding: 50px 0; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Large & Centered Logo */
         #main-logo {
-            height: 90px; /* Sized up significantly */
+            height: 95px; 
             width: auto;
-            max-width: 85%;
-            filter: brightness(0) invert(1); /* Seamless white logo */
+            max-width: 90%;
+            filter: brightness(0) invert(1); 
             object-fit: contain;
         }
 
         .content-wrap {
-            padding: 45px 60px;
+            padding: 40px 50px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .goal-area {
             flex: 1;
-            padding-right: 50px;
+            padding-right: 40px;
             display: flex;
             flex-direction: column;
         }
 
-        /* Improved Text Alignment and Colors */
-        #campaign-label { 
-            font-size: 16px; 
-            font-weight: 800; 
-            color: #bbb; /* Subtle secondary label color */
-            text-transform: uppercase; 
-            letter-spacing: 2.5px;
-            margin-bottom: 15px;
+        /* RE-ALIGNED HEADER: CREATOR NAME ON TOP */
+        .meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
         }
 
+        #creator-tag { 
+            font-size: 24px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase;
+        }
+
+        #campaign-label { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #bbb; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+        }
+
+        /* Progress Bar Styling */
         .progress-track {
             position: relative;
             width: 100%;
-            height: 80px; 
+            height: 85px; 
             background: #f4f4f4;
-            border-radius: 40px;
+            border-radius: 42px;
             overflow: hidden;
         }
 
@@ -96,51 +110,41 @@
             pointer-events: none;
         }
 
-        /* High-Visibility Font Styling */
-        #current-count { font-size: 48px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #goal-total { font-size: 24px; font-weight: 900; color: #333; }
+        #current-count { font-size: 52px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        #goal-total { font-size: 26px; font-weight: 900; color: #333; }
 
         .footer-text { 
             margin-top: 15px; 
-            font-size: 14px; 
+            font-size: 13px; 
             font-weight: 700; 
-            color: #999; 
+            color: #ccc; 
             text-transform: uppercase;
         }
 
-        /* QR Sidebar */
+        /* LARGER QR SECTION */
         .qr-section {
-            width: 160px;
+            width: 170px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        #creator-tag { 
-            font-size: 18px; 
-            font-weight: 900; 
-            color: #58b622; 
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-
         .qr-frame {
             background: #ffffff;
             padding: 12px;
-            border-radius: 20px;
-            border: 4px solid #58b622;
-            box-shadow: 0 10px 25px rgba(88, 182, 34, 0.15);
+            border-radius: 24px;
+            border: 5px solid #58b622;
+            box-shadow: 0 10px 30px rgba(88, 182, 34, 0.2);
         }
 
         .qr-instruction { 
-            font-size: 12px; 
+            font-size: 13px; 
             font-weight: 900; 
             color: #58b622; 
-            margin-top: 10px; 
+            margin-top: 12px; 
             text-transform: uppercase; 
         }
 
-        /* Conversion Pulse Animation */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -158,7 +162,11 @@
 
     <div class="content-wrap">
         <div class="goal-area">
-            <div id="campaign-label">Campaign Progress</div>
+            <div class="meta-header">
+                <span id="creator-tag"></span>
+                <span id="campaign-label"></span>
+            </div>
+            
             <div class="progress-track" id="bar-outer">
                 <div id="bar" class="progress-fill"></div>
                 <div class="text-overlay">
@@ -170,11 +178,10 @@
         </div>
 
         <div class="qr-section" id="qr-ui" style="visibility: hidden;">
-            <span id="creator-tag"></span>
             <div class="qr-frame">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-instruction">Scan to Shop</span>
+            <span class="qr-instruction">Scan to Save</span>
         </div>
     </div>
 </div>
@@ -196,7 +203,7 @@
             const pct = (curr / goal) * 100;
 
             if (last !== -1 && curr > last) {
-                confetti({ particleCount: 180, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
+                confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
                 const card = document.getElementById('main-card');
                 card.classList.remove('pulse-active');
                 void card.offsetWidth; 
@@ -214,7 +221,7 @@
                 document.getElementById('qr-ui').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
-                        text: data.link.trim(), width: 100, height: 100
+                        text: data.link.trim(), width: 130, height: 130 // Sized up QR
                     });
                 } else {
                     qr.makeCode(data.link.trim());
@@ -228,4 +235,4 @@
 </script>
 
 </body>
-</html>
+</html
