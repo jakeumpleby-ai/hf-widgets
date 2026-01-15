@@ -5,12 +5,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        @keyframes conversionPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(88, 182, 34, 0.4); }
-            100% { transform: scale(1); }
-        }
-
         body { 
             background: transparent; 
             margin: 0; 
@@ -22,7 +16,7 @@
             overflow: hidden;
         }
         
-        .widget-container { 
+        .container { 
             width: 700px; 
             background: #ffffff; 
             border-radius: 40px; 
@@ -32,64 +26,59 @@
             overflow: hidden;
         }
 
-        /* MASSIVE BRAND STAGE */
-        .brand-stage {
+        /* FULL WIDTH SEAMLESS GREEN BANNER */
+        .banner {
             width: 100%;
             background: #58b622; 
-            padding: 60px 0; /* Huge vertical space for dominance */
+            padding: 50px 0; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* High-res PNG logo for maximum stability */
         .hf-logo {
-            height: 90px; /* Dominant Brand Component */
+            height: 80px; 
             width: auto;
-            /* Seamless white logo filter */
-            filter: brightness(0) invert(1);
         }
 
-        .content-body {
-            padding: 45px 55px;
+        .content {
+            padding: 40px 50px;
             display: flex;
             align-items: center;
         }
 
-        .goal-section {
+        .stats {
             flex: 1;
-            padding-right: 45px;
+            padding-right: 40px;
         }
 
-        #campaign-label { 
+        #goal-label { 
             font-size: 15px; 
             font-weight: 700; 
             color: #ccc; 
             text-transform: uppercase; 
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             margin-bottom: 15px;
         }
 
-        .progress-track {
+        .progress-bar {
             position: relative;
             width: 100%;
-            height: 80px; 
+            height: 85px; 
             background: #f0f0f0;
-            border-radius: 40px;
+            border-radius: 45px;
             overflow: hidden;
         }
 
-        .pulse-active {
-            animation: conversionPulse 0.8s ease-in-out;
-        }
-
-        .progress-fill {
+        .fill {
             height: 100%;
             width: 0%;
             background: #58b622; 
             transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .progress-text {
+        .text-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
@@ -100,10 +89,10 @@
             pointer-events: none;
         }
 
-        #count-val { font-size: 48px; font-weight: 900; color: #ffffff; }
-        #goal-val { font-size: 24px; font-weight: 900; color: #444; }
+        #current { font-size: 50px; font-weight: 900; color: #ffffff; }
+        #total { font-size: 24px; font-weight: 900; color: #333; }
 
-        .footer-note { 
+        .footer { 
             margin-top: 15px; 
             font-size: 13px; 
             font-weight: 700; 
@@ -111,69 +100,64 @@
             text-transform: uppercase;
         }
 
-        .qr-sidebar {
-            width: 150px;
+        /* QR Section */
+        .qr-side {
+            width: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        #creator-tag { 
+        #creator-id { 
             font-size: 18px; 
             font-weight: 900; 
             color: #58b622; 
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
 
-        .qr-frame {
+        .qr-wrap {
             background: #ffffff;
-            padding: 12px;
+            padding: 10px;
             border-radius: 20px;
             border: 3px solid #58b622;
         }
 
-        .qr-msg { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #58b622; 
-            margin-top: 10px; 
-            text-transform: uppercase; 
-        }
+        .qr-text { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="widget-container" id="widget-card">
-    <div class="brand-stage">
-        <img class="hf-logo" src="https://www.hellofresh.com/images/hellofresh-logo.svg" alt="HelloFresh Logo">
+<div class="container">
+    <div class="banner">
+        <img class="hf-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png" alt="HelloFresh">
     </div>
 
-    <div class="content-body">
-        <div class="goal-section">
-            <div id="campaign-label">Campaign Progress</div>
-            <div class="progress-track" id="bar-outer">
-                <div id="bar" class="progress-fill"></div>
-                <div class="progress-text">
-                    <span id="count-val">0</span>
-                    <span id="goal-val">GOAL: 0</span>
+    <div class="content">
+        <div class="stats">
+            <div id="goal-label">Campaign Progress</div>
+            <div class="progress-bar">
+                <div id="bar" class="fill"></div>
+                <div class="text-overlay">
+                    <span id="current">0</span>
+                    <span id="total">GOAL: 0</span>
                 </div>
             </div>
-            <div class="footer-note">Boxes Tracked This Month</div>
+            <div class="footer">Boxes Tracked This Month</div>
         </div>
 
-        <div class="qr-sidebar" id="qr-wrap" style="visibility: hidden;">
-            <span id="creator-tag"></span>
-            <div class="qr-frame">
+        <div class="qr-side" id="qr-container" style="visibility: hidden;">
+            <span id="creator-id"></span>
+            <div class="qr-wrap">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-msg">Scan Me</span>
+            <span class="qr-text">Scan Me</span>
         </div>
     </div>
 </div>
 
 <script>
-    const API = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     
@@ -182,29 +166,26 @@
 
     async function update() {
         try {
-            const res = await fetch(`${API}?creator=${creator}`);
+            const res = await fetch(`${API_URL}?creator=${creator}`);
             const data = await res.json();
             const curr = parseInt(data.current);
             const goal = parseInt(data.goal);
             const pct = (curr / goal) * 100;
 
+            // Trigger confetti every time the count increases
             if (last !== -1 && curr > last) {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
-                const outer = document.getElementById('bar-outer');
-                outer.classList.remove('pulse-active');
-                void outer.offsetWidth; 
-                outer.classList.add('pulse-active');
             }
             last = curr;
 
-            document.getElementById('campaign-label').innerText = data.text;
-            document.getElementById('creator-tag').innerText = creator;
-            document.getElementById('count-val').innerText = curr;
-            document.getElementById('goal-val').innerText = "GOAL: " + goal;
+            document.getElementById('goal-label').innerText = data.text;
+            document.getElementById('creator-id').innerText = creator;
+            document.getElementById('current').innerText = curr;
+            document.getElementById('total').innerText = "GOAL: " + goal;
             document.getElementById('bar').style.width = Math.min(pct, 100) + "%";
 
             if (data.link) {
-                document.getElementById('qr-wrap').style.visibility = "visible";
+                document.getElementById('qr-container').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
                         text: data.link.trim(), width: 100, height: 100
@@ -217,7 +198,7 @@
     }
 
     update();
-    setInterval(update, 30000);
+    setInterval(update, 30000); // Check every 30 seconds
 </script>
 
 </body>
