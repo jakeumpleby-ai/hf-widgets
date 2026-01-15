@@ -27,18 +27,18 @@
             overflow: hidden;
         }
 
-        /* MASSIVE BRAND HEADER */
+        /* EVEN LARGER BRAND HEADER */
         .brand-header {
             width: 100%;
             background: #58b622; 
-            padding: 50px 0; 
+            padding: 60px 0; /* Increased padding for a larger stage */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         #main-logo {
-            height: 95px; 
+            height: 110px; /* Beefed up from 95px */
             width: auto;
             max-width: 90%;
             filter: brightness(0) invert(1); 
@@ -59,7 +59,6 @@
             flex-direction: column;
         }
 
-        /* RE-ALIGNED HEADER: CREATOR NAME ONLY */
         .meta-header {
             margin-bottom: 12px;
         }
@@ -99,13 +98,24 @@
             pointer-events: none;
         }
 
-        /* Updated "First Boxes" label inside the condensed tracker */
+        /* Realigned "First Boxes" to match Goal text */
         #current-count { font-size: 52px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #current-count::after { content: ' First Boxes'; font-size: 16px; font-weight: 700; opacity: 0.9; }
         
-        #goal-total { font-size: 26px; font-weight: 900; color: #333; }
+        .label-group {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
 
-        /* REBALANCED DESCRIPTION: MOVED BELOW GOAL */
+        .aligned-label {
+            font-size: 26px; /* Matches GOAL text size */
+            font-weight: 900; /* Matches GOAL text weight */
+            text-transform: uppercase;
+        }
+
+        #first-boxes-text { color: rgba(255,255,255,0.9); }
+        #goal-total { color: #333; }
+
         #campaign-label { 
             margin-top: 15px;
             font-size: 13px; 
@@ -116,10 +126,6 @@
             line-height: 1.4;
         }
 
-        /* Removed "First Boxes" text at the bottom per request */
-        .footer-text { display: none; }
-
-        /* LARGER QR SECTION */
         .qr-section {
             width: 170px;
             display: flex;
@@ -167,8 +173,11 @@
             <div class="progress-track" id="bar-outer">
                 <div id="bar" class="progress-fill"></div>
                 <div class="text-overlay">
-                    <span id="current-count">0</span>
-                    <span id="goal-total">GOAL: 0</span>
+                    <div class="label-group">
+                        <span id="current-count">0</span>
+                        <span class="aligned-label" id="first-boxes-text">First Boxes</span>
+                    </div>
+                    <span class="aligned-label" id="goal-total">GOAL: 0</span>
                 </div>
             </div>
             <div id="campaign-label"></div>
