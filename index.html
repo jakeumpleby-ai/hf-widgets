@@ -59,27 +59,16 @@
             flex-direction: column;
         }
 
-        /* RE-ALIGNED HEADER: CREATOR NAME ON TOP */
+        /* RE-ALIGNED HEADER: CREATOR NAME ONLY */
         .meta-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
             margin-bottom: 12px;
         }
 
         #creator-tag { 
-            font-size: 24px; 
+            font-size: 26px; 
             font-weight: 900; 
             color: #58b622; 
             text-transform: uppercase;
-        }
-
-        #campaign-label { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: #bbb; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px;
         }
 
         /* Progress Bar Styling */
@@ -110,12 +99,26 @@
             pointer-events: none;
         }
 
+        /* Added "Boxes" label to the condensed tracker */
         #current-count { font-size: 52px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        #current-count::after { content: ' Boxes'; font-size: 18px; font-weight: 700; opacity: 0.9; }
+        
         #goal-total { font-size: 26px; font-weight: 900; color: #333; }
 
-        .footer-text { 
-            margin-top: 15px; 
+        /* REBALANCED DESCRIPTION: MOVED BELOW GOAL */
+        #campaign-label { 
+            margin-top: 15px;
             font-size: 13px; 
+            font-weight: 700; 
+            color: #888; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .footer-text { 
+            margin-top: 8px; 
+            font-size: 11px; 
             font-weight: 700; 
             color: #ccc; 
             text-transform: uppercase;
@@ -147,7 +150,7 @@
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
         .pulse-active { animation: pulse 0.8s ease-in-out; }
@@ -164,7 +167,6 @@
         <div class="goal-area">
             <div class="meta-header">
                 <span id="creator-tag"></span>
-                <span id="campaign-label"></span>
             </div>
             
             <div class="progress-track" id="bar-outer">
@@ -174,7 +176,8 @@
                     <span id="goal-total">GOAL: 0</span>
                 </div>
             </div>
-            <div class="footer-text">Boxes Tracked This Month</div>
+            <div id="campaign-label"></div>
+            <div class="footer-text">First Boxes</div>
         </div>
 
         <div class="qr-section" id="qr-ui" style="visibility: hidden;">
@@ -221,7 +224,7 @@
                 document.getElementById('qr-ui').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
-                        text: data.link.trim(), width: 130, height: 130 // Sized up QR
+                        text: data.link.trim(), width: 130, height: 130
                     });
                 } else {
                     qr.makeCode(data.link.trim());
@@ -231,8 +234,8 @@
     }
 
     update();
-    setInterval(update, 30000); // 30-second rapid sync
+    setInterval(update, 30000);
 </script>
 
 </body>
-</html
+</html>
