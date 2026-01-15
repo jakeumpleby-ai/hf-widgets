@@ -4,11 +4,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        /* Fun Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes glow { 0% { box-shadow: 0 0 5px rgba(88, 182, 34, 0.2); } 50% { box-shadow: 0 0 20px rgba(88, 182, 34, 0.6); } 100% { box-shadow: 0 0 5px rgba(88, 182, 34, 0.2); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
         body { 
             background: transparent; 
             overflow: hidden; 
@@ -18,63 +13,143 @@
             align-items: center;
             height: 100vh;
             font-family: 'Inter', sans-serif;
-            animation: fadeIn 0.8s ease-out;
         }
         
         .container { 
             width: 580px; 
-            height: 230px;
             background: #ffffff; 
-            padding: 25px 35px; 
             border-radius: 24px; 
             box-sizing: border-box;
             box-shadow: 0 10px 40px rgba(0,0,0,0.12);
             display: flex;
             flex-direction: column;
-            border-bottom: 10px solid #58b622;
+            overflow: hidden; /* Clips the banner to the border radius */
         }
 
-        .logo-row { width: 100%; margin-bottom: 20px; }
-        .hf-logo { height: 35px; width: auto; }
+        /* Full Width Branded Header */
+        .banner-header {
+            width: 100%;
+            background: #58b622; /* HelloFresh Green */
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        .main-body { display: flex; width: 100%; align-items: center; flex: 1; }
+        .hf-logo {
+            height: 30px; /* Sized to fit comfortably in the green bar */
+            width: auto;
+            filter: brightness(0) invert(1); /* Makes the logo pure white */
+        }
 
-        .goal-area { flex: 1; padding-right: 30px; }
+        /* Padding for the content below the banner */
+        .content-wrap {
+            padding: 25px 35px;
+            display: flex;
+            align-items: center;
+        }
 
-        #display-text { font-size: 13px; font-weight: 800; color: #bbb; text-transform: uppercase; margin-bottom: 10px; }
+        .goal-area {
+            flex: 1;
+            padding-right: 30px;
+            display: flex;
+            flex-direction: column;
+        }
 
-        .bar-container { position: relative; width: 100%; height: 56px; background: #f4f4f4; border-radius: 28px; overflow: hidden; }
-        .bar-fill { height: 100%; width: 0%; background: #58b622; transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .bar-text { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 25px; box-sizing: border-box; }
+        #display-text { 
+            font-size: 13px; 
+            font-weight: 800; 
+            color: #bbb; 
+            text-transform: uppercase; 
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+        }
+
+        .bar-container {
+            position: relative;
+            width: 100%;
+            height: 56px; 
+            background: #f4f4f4;
+            border-radius: 28px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #58b622; 
+            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bar-text {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
 
         #current-count { font-size: 32px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         #goal-total { font-size: 18px; font-weight: 900; color: #444; }
 
-        .footer-text { margin-top: 10px; font-size: 11px; font-weight: 800; color: #ccc; text-transform: uppercase; }
-
-        /* QR Stack with Float and Glow */
-        .qr-column { width: 130px; display: flex; flex-direction: column; align-items: center; animation: float 4s infinite ease-in-out; }
-
-        #creator-name { font-size: 15px; font-weight: 900; color: #58b622; text-transform: uppercase; margin-bottom: 8px; }
-
-        .qr-holder { 
-            background: #ffffff; padding: 8px; border-radius: 14px; 
-            animation: glow 3s infinite ease-in-out; 
-            border: 2px solid rgba(88, 182, 34, 0.1);
-            display: flex; justify-content: center; align-items: center; margin-bottom: 8px;
+        .footer-text { 
+            margin-top: 10px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            color: #ccc; 
+            text-transform: uppercase;
         }
 
-        .qr-label { font-size: 10px; font-weight: 900; color: #58b622; text-transform: uppercase; }
+        /* Static QR Column (No Animations) */
+        .qr-column {
+            width: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #creator-name { 
+            font-size: 15px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .qr-holder {
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 14px;
+            border: 2px solid #58b622;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .qr-label {
+            font-size: 10px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase;
+        }
+
+        #qrcode-canvas img { display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo-row">
-        <img src="logo.png" class="hf-logo" alt="HelloFresh">
+    <div class="banner-header">
+        <img src="logo.png" class="hf-logo" alt="HelloFresh Logo">
     </div>
 
-    <div class="main-body">
+    <div class="content-wrap">
         <div class="goal-area">
             <div id="display-text">Campaign Goal</div>
             <div class="bar-container">
@@ -89,7 +164,9 @@
 
         <div class="qr-column" id="qr-wrapper" style="visibility: hidden;">
             <span id="creator-name"></span>
-            <div class="qr-holder"><div id="qrcode-canvas"></div></div>
+            <div class="qr-holder">
+                <div id="qrcode-canvas"></div>
+            </div>
             <span class="qr-label">Scan Me</span>
         </div>
     </div>
@@ -106,32 +183,39 @@
         try {
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
-            const percent = (data.current / data.goal) * 100;
             
+            const percent = (data.current / data.goal) * 100;
             document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
             document.getElementById('current-count').innerText = data.current;
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
 
-            if (data.link) {
+            if (data.link && data.link.trim() !== "") {
                 const wrapper = document.getElementById('qr-wrapper');
+                const container = document.getElementById('qrcode-canvas');
                 wrapper.style.visibility = "visible";
+                
                 if (!qrGenerator) {
-                    qrGenerator = new QRCode(document.getElementById('qrcode-canvas'), {
-                        text: data.link.trim(), width: 72, height: 72,
-                        colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
+                    qrGenerator = new QRCode(container, {
+                        text: data.link.trim(),
+                        width: 72,
+                        height: 72,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
                     });
                 } else {
                     qrGenerator.clear();
                     qrGenerator.makeCode(data.link.trim());
                 }
             }
-        } catch (e) { console.error("Error", e); }
+        } catch (e) { console.error("Update error", e); }
     }
 
     updateWidget();
     setInterval(updateWidget, 120000);
 </script>
+
 </body>
 </html>
