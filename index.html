@@ -5,6 +5,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        :root {
+            --hf-green: #58b622;
+            --bg-gray: #f8f9fa;
+        }
+
         body { 
             background: transparent; 
             margin: 0; 
@@ -12,172 +17,172 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             font-family: 'Inter', sans-serif;
             overflow: hidden;
         }
         
+        /* STRICT 500x500 Square Format */
         .widget-card { 
-            width: 720px; 
+            width: 500px; 
+            height: 500px;
             background: #ffffff; 
-            border-radius: 40px; 
+            border-radius: 50px; 
             box-sizing: border-box;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.25);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .brand-header {
-            width: 100%;
-            background: #58b622; 
-            padding: 15px 0; 
+        /* BRAND TOP SECTION */
+        .brand-top {
+            background: var(--hf-green);
+            padding: 35px 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-shrink: 0;
         }
 
         #main-logo {
-            height: 125px; 
-            width: auto;
-            max-width: 95%;
-            filter: brightness(0) invert(1); 
+            height: 80px;
+            filter: brightness(0) invert(1);
             object-fit: contain;
         }
 
-        .content-wrap {
-            padding: 30px 50px 40px 50px;
+        /* MAIN CONTENT VERTICAL STACK */
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: space-between;
         }
 
-        .goal-area {
-            flex: 1;
-            padding-right: 40px;
-            display: flex;
-            flex-direction: column;
+        #creator-tag {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--hf-green);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0;
         }
 
-        #creator-tag { 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: #58b622; 
-            text-transform: uppercase;
+        /* COMPACT CENTER PROGRESS UI */
+        .progress-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bar-outer {
+            width: 100%;
+            height: 80px;
+            background: var(--bg-gray);
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
             margin-bottom: 12px;
         }
 
-        .progress-track {
-            position: relative;
-            width: 100%;
-            height: 90px; 
-            background: #f4f4f4;
-            border-radius: 45px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
+        .bar-fill {
             height: 100%;
             width: 0%;
-            background: #58b622; 
+            background: var(--hf-green);
             transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .text-overlay {
+        .bar-labels {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 35px;
+            padding: 0 30px;
             box-sizing: border-box;
-            pointer-events: none;
         }
 
-        .big-number {
-            font-size: 52px; 
-            font-weight: 900;
-            color: #000000;
-        }
-
-        .small-label {
-            font-size: 16px; 
-            font-weight: 800; 
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        #first-boxes-text { color: #000000; margin-left: 10px; }
-        #goal-label { color: #000000; margin-right: 10px; } /* Goal label now pure black */
-
-        .flex-group { display: flex; align-items: center; }
-
-        /* Bolder and larger Zwilling promotional text */
-        #campaign-label { 
-            margin-top: 15px;
-            font-size: 16px; /* Increased size */
-            font-weight: 900; /* Max bold */
-            color: #000000; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px;
-            line-height: 1.3;
-        }
-
-        .qr-section {
-            width: 170px;
+        .stat-group {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 8px;
         }
 
-        .qr-frame {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 24px;
-            border: 5px solid #58b622;
-            box-shadow: 0 10px 30px rgba(88, 182, 34, 0.2);
+        .num { font-size: 40px; font-weight: 900; color: #000; }
+        .lab { font-size: 14px; font-weight: 800; text-transform: uppercase; color: #000; opacity: 0.6; }
+        
+        /* PROMO SECTION */
+        #promo-text {
+            font-size: 16px;
+            font-weight: 900;
+            color: #000;
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 10px;
         }
 
-        .qr-instruction { 
-            font-size: 13px; 
-            font-weight: 900; 
-            color: #58b622; 
-            margin-top: 12px; 
-            text-transform: uppercase; 
+        /* QR FOOTER */
+        .qr-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--bg-gray);
+            padding: 12px 25px;
+            border-radius: 25px;
+        }
+
+        .qr-wrap {
+            background: #fff;
+            padding: 5px;
+            border-radius: 12px;
+            border: 2px solid var(--hf-green);
+        }
+
+        .scan-me {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--hf-green);
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-<div class="widget-card">
-    <div class="brand-header">
+<div class="widget-card" id="widget">
+    <div class="brand-top">
         <img id="main-logo" src="./logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png'">
     </div>
 
-    <div class="content-wrap">
-        <div class="goal-area">
-            <div id="creator-tag"></div>
-            
-            <div class="progress-track">
-                <div id="bar" class="progress-fill"></div>
-                <div class="text-overlay">
-                    <div class="flex-group">
-                        <span id="current-count" class="big-number">0</span>
-                        <span class="small-label" id="first-boxes-text">First Boxes</span>
+    <div class="main-content">
+        <h1 id="creator-tag">CREATOR</h1>
+
+        <div class="progress-box">
+            <div class="bar-outer">
+                <div id="bar" class="bar-fill"></div>
+                <div class="bar-labels">
+                    <div class="stat-group">
+                        <span id="curr" class="num">0</span>
+                        <span class="lab">First Boxes</span>
                     </div>
-                    <div class="flex-group">
-                        <span class="small-label" id="goal-label">GOAL:</span>
-                        <span id="goal-num" class="big-number">0</span>
+                    <div class="stat-group">
+                        <span class="lab">Goal</span>
+                        <span id="goal" class="num">0</span>
                     </div>
                 </div>
             </div>
-            <div id="campaign-label"></div>
+            <div id="promo-text">Loading Promotion...</div>
         </div>
 
-        <div class="qr-section" id="qr-ui" style="visibility: hidden;">
-            <div class="qr-frame">
+        <div class="qr-footer" id="qr-ui" style="visibility: hidden;">
+            <div class="qr-wrap">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-instruction">Scan Me</span>
+            <span class="scan-me">Scan Me</span>
         </div>
     </div>
 </div>
@@ -186,44 +191,37 @@
     const API = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
-    
-    let qr = null;
-    let last = -1;
+    let qr = null; let last = -1;
 
     async function update() {
         try {
             const res = await fetch(`${API}?creator=${creator}`);
             const data = await res.json();
-            const curr = parseInt(data.current);
-            const goal = parseInt(data.goal);
-            const pct = (curr / goal) * 100;
-
-            if (last !== -1 && curr > last) {
+            const c = parseInt(data.current);
+            const g = parseInt(data.goal);
+            
+            if (last !== -1 && c > last) {
                 confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
             }
-            last = curr;
+            last = c;
 
-            document.getElementById('campaign-label').innerText = data.text;
             document.getElementById('creator-tag').innerText = creator;
-            document.getElementById('current-count').innerText = curr;
-            document.getElementById('goal-num').innerText = goal;
-            document.getElementById('bar').style.width = Math.min(pct, 100) + "%";
+            document.getElementById('promo-text').innerText = data.text;
+            document.getElementById('curr').innerText = c;
+            document.getElementById('goal').innerText = g;
+            document.getElementById('bar').style.width = Math.min((c/g)*100, 100) + "%";
 
             if (data.link) {
                 document.getElementById('qr-ui').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
-                        text: data.link.trim(), width: 130, height: 130
+                        text: data.link.trim(), width: 70, height: 70
                     });
-                } else {
-                    qr.makeCode(data.link.trim());
-                }
+                } else { qr.makeCode(data.link.trim()); }
             }
         } catch (e) { console.error(e); }
     }
-
-    update();
-    setInterval(update, 30000); // 30-second rapid sync
+    update(); setInterval(update, 30000);
 </script>
 
 </body>
