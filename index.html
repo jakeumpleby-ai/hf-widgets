@@ -16,61 +16,63 @@
         }
         
         .container { 
-            width: 580px; 
+            width: 650px; /* Increased width for better presence */
             background: #ffffff; 
-            border-radius: 24px; 
+            border-radius: 28px; 
             box-sizing: border-box;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Clips the banner to the border radius */
+            overflow: hidden;
         }
 
-        /* Full Width Branded Header */
+        /* SIGNIFICANTLY LARGER & WIDER BANNER */
         .banner-header {
             width: 100%;
-            background: #58b622; /* HelloFresh Green */
-            padding: 15px 0;
+            background: #58b622; 
+            padding: 25px 0; /* Increased vertical height */
             display: flex;
             justify-content: center;
             align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
         }
 
         .hf-logo {
-            height: 30px; /* Sized to fit comfortably in the green bar */
+            height: 55px; /* Nearly double previous height */
             width: auto;
-            filter: brightness(0) invert(1); /* Makes the logo pure white */
+            max-width: 85%; /* Ensures it spans across most of the top */
+            filter: brightness(0) invert(1); 
+            object-fit: contain;
         }
 
-        /* Padding for the content below the banner */
         .content-wrap {
-            padding: 25px 35px;
+            padding: 30px 40px;
             display: flex;
             align-items: center;
         }
 
         .goal-area {
             flex: 1;
-            padding-right: 30px;
+            padding-right: 35px;
             display: flex;
             flex-direction: column;
         }
 
         #display-text { 
-            font-size: 13px; 
+            font-size: 14px; 
             font-weight: 800; 
             color: #bbb; 
             text-transform: uppercase; 
-            letter-spacing: 1.2px;
-            margin-bottom: 10px;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
         }
 
         .bar-container {
             position: relative;
             width: 100%;
-            height: 56px; 
+            height: 64px; /* Slightly taller bar to match new scale */
             background: #f4f4f4;
-            border-radius: 28px;
+            border-radius: 32px;
             overflow: hidden;
         }
 
@@ -87,25 +89,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 25px;
+            padding: 0 28px;
             box-sizing: border-box;
             pointer-events: none;
         }
 
-        #current-count { font-size: 32px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        #goal-total { font-size: 18px; font-weight: 900; color: #444; }
+        #current-count { font-size: 36px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        #goal-total { font-size: 20px; font-weight: 900; color: #444; }
 
         .footer-text { 
-            margin-top: 10px; 
-            font-size: 11px; 
+            margin-top: 12px; 
+            font-size: 12px; 
             font-weight: 800; 
             color: #ccc; 
             text-transform: uppercase;
         }
 
-        /* Static QR Column (No Animations) */
         .qr-column {
-            width: 130px;
+            width: 140px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -113,18 +114,18 @@
         }
 
         #creator-name { 
-            font-size: 15px; 
+            font-size: 16px; 
             font-weight: 900; 
             color: #58b622; 
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: center;
         }
 
         .qr-holder {
             background: #ffffff;
-            padding: 8px;
-            border-radius: 14px;
+            padding: 10px;
+            border-radius: 16px;
             border: 2px solid #58b622;
             display: flex;
             justify-content: center;
@@ -133,7 +134,7 @@
         }
 
         .qr-label {
-            font-size: 10px; 
+            font-size: 11px; 
             font-weight: 900; 
             color: #58b622; 
             text-transform: uppercase;
@@ -199,8 +200,8 @@
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(container, {
                         text: data.link.trim(),
-                        width: 72,
-                        height: 72,
+                        width: 80,
+                        height: 80,
                         colorDark : "#000000",
                         colorLight : "#ffffff",
                         correctLevel : QRCode.CorrectLevel.H
