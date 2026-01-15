@@ -23,7 +23,7 @@
         }
         
         .container { 
-            width: 680px; 
+            width: 700px; 
             background: #ffffff; 
             border-radius: 40px; 
             box-sizing: border-box;
@@ -37,15 +37,17 @@
         .banner-header {
             width: 100%;
             background: #58b622; 
-            padding: 55px 0; /* Huge vertical presence */
+            padding: 50px 0; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .hf-logo-svg {
-            height: 80px; /* Dominant Brand Component */
+        /* Stable Base64 Logo */
+        .hf-logo-img {
+            height: 75px; 
             width: auto;
+            display: block;
         }
 
         .content-wrap {
@@ -66,7 +68,7 @@
             font-weight: 800; 
             color: #ccc; 
             text-transform: uppercase; 
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             margin-bottom: 15px;
         }
 
@@ -126,7 +128,6 @@
             color: #58b622; 
             text-transform: uppercase;
             margin-bottom: 12px;
-            text-align: center;
         }
 
         .qr-holder {
@@ -146,18 +147,15 @@
             color: #58b622; 
             text-transform: uppercase;
         }
+
+        #qrcode-canvas img { display: block; }
     </style>
 </head>
 <body>
 
 <div class="container" id="main-container">
     <div class="banner-header">
-        <svg class="hf-logo-svg" viewBox="0 0 100 35" xmlns="http://www.w3.org/2000/svg">
-            <g fill="white">
-                <path d="M12.5 25.4c-1.1 0-2.2-.2-3.2-.6-.9-.4-1.8-.9-2.5-1.6-.7-.7-1.3-1.6-1.7-2.6-.4-1-.6-2.1-.6-3.3s.2-2.3.6-3.3c.4-1 1-1.9 1.7-2.6.7-.7 1.6-1.2 2.5-1.6 1-.4 2.1-.6 3.2-.6s2.2.2 3.2.6c.9.4 1.8.9 2.5 1.6.7.7 1.3 1.6 1.7 2.6.4 1 .6 2.1.6 3.3s-.2 2.3-.6 3.3c-.4 1-1 1.9-1.7 2.6-.7.7-1.6 1.2-2.5 1.6-1 .4-2.1.6-3.2.6zm0-2.8c.7 0 1.3-.1 1.9-.4.6-.3 1.1-.7 1.5-1.2.4-.5.7-1.1.9-1.8.2-.7.3-1.5.3-2.3s-.1-1.6-.3-2.3c-.2-.7-.5-1.3-.9-1.8-.4-.5-.9-.9-1.5-1.2-.6-.3-1.2-.4-1.9-.4s-1.3.1-1.9.4c-.6.3-1.1.7-1.5 1.2-.4.5-.7 1.1-.9 1.8-.2.7-.3 1.5-.3 2.3s.1 1.6.3 2.3c.2.7.5 1.3.9 1.8.4.5.9.9 1.5 1.2.6.3 1.2.4 1.9.4zM32.4 25.1V8.5h2.8v16.6h-2.8zM40.8 25.1V8.5h2.8v16.6h-2.8zM57.4 25.4c-1.1 0-2.2-.2-3.2-.6-.9-.4-1.8-.9-2.5-1.6-.7-.7-1.3-1.6-1.7-2.6-.4-1-.6-2.1-.6-3.3s.2-2.3.6-3.3c.4-1 1-1.9 1.7-2.6.7-.7 1.6-1.2 2.5-1.6 1-.4 2.1-.6 3.2-.6s2.2.2 3.2.6c.9.4 1.8.9 2.5 1.6.7.7 1.3 1.6 1.7 2.6.4 1 .6 2.1.6 3.3s-.2 2.3-.6 3.3c-.4 1-1 1.9-1.7 2.6-.7.7-1.6 1.2-2.5 1.6-1 .4-2.1.6-3.2.6zm0-2.8c.7 0 1.3-.1 1.9-.4.6-.3 1.1-.7 1.5-1.2.4-.5.7-1.1.9-1.8.2-.7.3-1.5.3-2.3s-.1-1.6-.3-2.3c-.2-.7-.5-1.3-.9-1.8-.4-.5-.9-.9-1.5-1.2-.6-.3-1.2-.4-1.9-.4s-1.3.1-1.9.4c-.6.3-1.1.7-1.5 1.2-.4.5-.7 1.1-.9 1.8-.2.7-.3 1.5-.3 2.3s.1 1.6.3 2.3c.2.7.5 1.3.9 1.8.4.5.9.9 1.5 1.2.6.3 1.2.4 1.9.4zM77.5 8.5h7V11h-4.2v4.1h3.8v2.5h-3.8v7.6h-2.8V8.5zM92.2 25.1V8.5h2.8v6.7l4-6.7H102l-4.6 7.5 4.9 9.1h-3.1l-3.6-6.9-.8 1.3v5.6h-2.7z"/>
-                <path d="M19.4 3.4c-.8.9-1.5 1.9-2.1 3-.6 1.1-1.1 2.3-1.5 3.5-.4-1.2-.9-2.4-1.5-3.5-.6-1.1-1.3-2.1-2.1-3C10.1 1.3 7.5.1 4.5.1v33.2c2.9 0 5.5-1.2 7.5-3.3.8-.9 1.5-1.9 2.1-3 .6-1.1 1.1-2.3 1.5-3.5.4 1.2.9 2.4 1.5 3.5.6 1.1 1.3 2.1 2.1 3 2 2.1 4.6 3.3 7.5 3.3V.1c-2.9 0-5.5 1.2-7.5 3.3z" fill="#91d400"/>
-            </g>
-        </svg>
+        <img class="hf-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NTQgMTMzIj48cGF0aCBkPSJNNTQuNSA5OC43Yy00LjMgMC04LjItLjgtMTEuNy0yLjMtMy41LTEuNS02LjQtMy43LTguOC02LjYtMi40LTIuOS00LjItNi41LTUuNS0xMC43LTEuMy00LjItMi05LTItMTQuMyAwLTUuMy43LTEwIDItMTQuMSAxLjMtNC4xIDMuMi03LjYgNS41LTEwLjUgMi40LTIuOSA1LjMtNS4xIDguOC02LjYgMy41LTEuNSA3LjQtMi4yIDExLjctMi4yczguMi43IDExLjcgMi4yYzMuNSAxLjUgNi40IDMuNyA4LjggNi42IDIuNCAyLjkgNC4yIDYuNCA1LjUgMTAuNSAxLjMgNC4xIDIgOC44IDIgMTQuMSAwIDUuMy0uNyAxMC4xLTIgMTQuM3MtMy4yIDcuOC01LjUgMTAuN2MtMi40IDIuOS01LjMgNS4xLTguOC02LjYtMy41LTEuNS03LjQtMi4zLTExLjctMi4zem0wLTExLjNjMi40IDAgNC42LS41IDYuNS0xLjUgMS45LTEgMy41LTIuNSA0LjgtNC40IDEuMy0xLjkgMi4zLTQuMyAzLTcuMS43LTIuOCAxLTUuOSAxLTkuNSAwLTMuNi0uMy02LjctMS05LjUtLjctMi44LTEuNy01LjItMy03LjEtMS4zLTEuOS0yLjktMy40LTQuOC00LjQtMS45LTEtNC4xLTEuNS02LjUtMS41cy00LjYuNS02LjUgMS41Yy0xLjkgMS0zLjUtMi41LTQuOC00LjQtMS4zLTEuOS0yLjMtNC4zLTMtNy4xLS43LTIuOC0xLTUuOS0xLTkuNSAwLTMuNi4zLTIuOCAxLTUuMiAzLTcuMSAxLjMtMS45IDIuOS0zLjQgNC44LTQuNCAxLjktMSAzLjUuNyAxLjUtNi41IDEuNXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMTI0LjIgOTcuNFYzMS4zaDEwLjl2NjYuMWgtMTAuOXpNMTE3LjkgOTcuNFYzMS4zaDEwLjl2NjYuMWgtMTAuOXpNMjI0LjIgOTguN2MtNC4zIDAtOC4yLS44LTExLjctMi4zLTMuNS0xLjUtNi40LTMuNy04LjgtNi42LTIuNC0yLjktNC4yLTYuNS01LjUtMTAuNy0xLjMtNC4yLTItOS0yLTE0LjMgMC01LjMuNy0xMCAyLTE0LjEgMS4zLTQuMSAzLjItNy42IDUuNS0xMC41IDIuNC0yLjkgNS4zLTUuMSA4LjgtNi42IDMuNS0xLjUgNy40LTIuMiAxMS43LTIuMnM4LjIuNyAxMS43IDIuMmMzLjUgMS41IDYuNCAzLjcgOC44IDYuNiAyLjQgMi45IDQuMiA2LjQgNS41IDEwLjUgMS4zIDQuMSAyIDguOCAyIDE0LjEgMCA1LjMtLjcgMTAuMS0yIDE0LjNzLTMuMiA3LjgtNS41IDEwLjdjLTIuNCAyLjktNS4zIDUuMS04LjgtNi42LTMuNS0xLjUtNy40LTIuMy0xMS43LTIuM3ptMC0xMS4zYzIuNCAwIDQuNi0uNSA2LjUtMS41IDEuOS0xIDMuNS0yLjUgNC44LTQuNCAxLjMtMS45IDIuMy00LjMgMy03LjEuNy0yLjggMS01LjkgMS05LjUgMC0zLjYtLjMtNi43LTEtOS41LS43LTIuOC0xLjctNS4yLTMtNy4xLTEuMy0xLjktMi45LTMuNC00LjgtNC40LTEuOS0xLTQuMS0xLjUtNi41LTEuNXMtNC42LjUtNi41IDEuNWMtMS45IDEtMy41IDIuNS00LjgtNC40LTEuMy0xLjkgMi4zLTQuMyAzLTcuMS43LTIuOCAxLTUuOSAxLTkuNSAwLTMuNi4zLTIuOCAxLTUuMiAzLTcuMSAxLjMtMS45IDIuOS0zLjQgNC44LTQuNCAxLjktMSAzLjUuNyAxLjUtNi41IDEuNXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzA0LjYgMzEuM2gyNy44djkuOWgtMTYuOXYxNi4xaDE1LjN2OS45aC0xNS4zdjMwLjJoLTEwLjlWMzEuM3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzYzLjMgOTcuNFYzMS4zaDEwLjl2MjYuN2wxNi4xLTI2LjdoMTIuNWwtMTguNCAyOS44IDE5LjUgMzYuM2gtMTIuNGwtMTQuMy0yNy40LTMgNS4xdjIyLjNoLTEwLjl6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTQzNC42IDk4LjdjLTQuMSAwLTcuOC0uOC0xMS0yLjQtMy4yLTEuNi01LjgtMy45LTcuOC02LjktMi0zLTMtNi42LTMtMTAuOFYzMS4zaDEwLjl2NDZjMCAyLjUuNSA0LjYgMS42IDYuMyAxLjEgMS43IDIuNyAyLjYgNC45IDIuNnMzLjgtLjkgNC45LTIuNmMxLjEtMS43IDEuNi0zLjggMS42LTYuM1YzMS4zaDEwLjl2NDcuM2MwIDQuMi0xIDcuOC0zIDEwLjgtMiAzLTQuNiA1LjMtNy44IDYuOS0zLjQgMS42LTcuMiAyLjQtMTEuMiAyLjR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTcyLjIgMTMuNWMtMy4xIDMuNS01LjkgNy40LTguMyAxMS42LTIuNSA0LjMtNC41IDguOS02IDEzLjctMS41LTQuOC0zLjUtOS40LTYtMTMuNy0yLjQtNC4yLTUuMi04LjEtOC4zLTExLjZDMzUuNSA1IDI1LjEuNCAxMy41LjR2MTMyLjJjMTEuNiAwIDIyLTQuNiAzMC4xLTEzLjEgMy4xLTMuNSA1LjktNy40IDguMy0xMS42IDIuNS00LjMgNC41LTguOSA2LTEzLjcgMS41IDQuOCAzLjUgOS40IDYgMTMuNyAyLjQgNC4yIDUuMiA4LjEgOC4zIDExLjYgOC4xIDguNSAxOC41IDEzLjEgMzAuMSAxMy4xVl40Yy0xMS42IDAtMjIsNC42LTMwLjEgMTMuMXoiIGZpbGw9IiM5MWQ0MDAiLz48L3N2Zz4=" alt="HelloFresh Logo">
     </div>
 
     <div class="content-wrap">
@@ -207,7 +205,6 @@
             const goalTotal = parseInt(data.goal);
             const percent = (currentCount / goalTotal) * 100;
 
-            // Confetti and Pulse on increase
             if (lastCount !== -1 && currentCount > lastCount) {
                 fireConfetti();
                 const outer = document.getElementById('bar-outer');
@@ -231,11 +228,8 @@
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(container, {
                         text: data.link.trim(),
-                        width: 90,
-                        height: 90,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
+                        width: 90, height: 90,
+                        colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H
                     });
                 } else {
                     qrGenerator.clear();
