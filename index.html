@@ -8,7 +8,6 @@
         body { 
             background: transparent; 
             margin: 0; 
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,7 +16,7 @@
             overflow: hidden;
         }
         
-        .widget-box { 
+        .widget-card { 
             width: 700px; 
             background: #ffffff; 
             border-radius: 40px; 
@@ -37,8 +36,9 @@
             align-items: center;
         }
 
-        .hf-logo {
-            height: 70px; /* Dominant Brand Component */
+        /* The Logo as Internal Code - Cannot Break */
+        .hf-logo-svg {
+            height: 80px; 
             width: auto;
         }
 
@@ -48,12 +48,12 @@
             align-items: center;
         }
 
-        .main-stats {
+        .stats-area {
             flex: 1;
             padding-right: 40px;
         }
 
-        #campaign-label { 
+        #label-text { 
             font-size: 14px; 
             font-weight: 700; 
             color: #ccc; 
@@ -62,13 +62,12 @@
             margin-bottom: 15px;
         }
 
-        /* Progress Bar */
         .progress-track {
             position: relative;
             width: 100%;
-            height: 75px; 
+            height: 80px; 
             background: #f0f0f0;
-            border-radius: 38px;
+            border-radius: 40px;
             overflow: hidden;
         }
 
@@ -79,19 +78,18 @@
             transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .progress-text {
+        .progress-display {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 35px;
             box-sizing: border-box;
-            pointer-events: none;
         }
 
-        #current-val { font-size: 44px; font-weight: 900; color: #ffffff; }
-        #goal-val { font-size: 22px; font-weight: 900; color: #333; }
+        #current-val { font-size: 48px; font-weight: 900; color: #ffffff; }
+        #goal-val { font-size: 24px; font-weight: 900; color: #333; }
 
         .footer { 
             margin-top: 15px; 
@@ -109,37 +107,43 @@
             align-items: center;
         }
 
-        #creator-code { 
+        #creator-name { 
             font-size: 18px; 
             font-weight: 900; 
             color: #58b622; 
             margin-bottom: 10px;
-            text-align: center;
         }
 
-        .qr-border {
+        .qr-box {
             background: #ffffff;
             padding: 10px;
             border-radius: 20px;
             border: 3px solid #58b622;
         }
 
-        .qr-msg { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
+        .qr-label { font-size: 11px; font-weight: 700; color: #58b622; margin-top: 8px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="widget-box">
+<div class="widget-card">
     <div class="brand-header">
-        <img class="hf-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/HelloFresh_logo.svg/1200px-HelloFresh_logo.svg.png" alt="HelloFresh">
+        <svg class="hf-logo-svg" viewBox="0 0 454 133" xmlns="http://www.w3.org/2000/svg">
+            <path d="M54.5 98.7c-4.3 0-8.2-.8-11.7-2.3-3.5-1.5-6.4-3.7-8.8-6.6-2.4-2.9-4.2-6.5-5.5-10.7-1.3-4.2-2-9-2-14.3 0-5.3.7-10 2-14.1 1.3-4.1 3.2-7.6 5.5-10.5 2.4-2.9 5.3-5.1 8.8-6.6 3.5-1.5 7.4-2.2 11.7-2.2s8.2.7 11.7 2.2c3.5 1.5 6.4 3.7 8.8 6.6 2.4 2.9 4.2 6.4 5.5 10.5 1.3 4.1 2 8.8 2 14.1 0 5.3-.7 10.1-2 14.3s-3.2 7.8-5.5 10.7c-2.4 2.9-5.3 5.1-8.8 6.6-3.5 1.5-7.4 2.3-11.7 2.3zm0-11.3c2.4 0 4.6-.5 6.5-1.5 1.9-1 3.5-2.5 4.8-4.4 1.3-1.9 2.3-4.3 3-7.1.7-2.8 1-5.9 1-9.5 0-3.6-.3-6.7-1-9.5-.7-2.8-1.7-5.2-3-7.1-1.3-1.9-2.9-3.4-4.8-4.4-1.9-1-4.1-1.5-6.5-1.5s-4.6.5-6.5 1.5c-1.9 1-3.5-2.5-4.8-4.4-1.3-1.9-2.3-4.3-3-7.1-.7-2.8-1-5.9-1-9.5 0-3.6.3-6.7 1-9.5.7-2.8 1.7-5.2 3-7.1 1.3-1.9 2.9-3.4 4.8-4.4 1.9-1 4.1 1.5 6.5 1.5z" fill="white"/>
+            <path d="M124.2 97.4V31.3h10.9v66.1h-10.9zM157.8 97.4V31.3h10.9v66.1h-10.9zM224.2 98.7c-4.3 0-8.2-.8-11.7-2.3-3.5-1.5-6.4-3.7-8.8-6.6-2.4-2.9-4.2-6.5-5.5-10.7-1.3-4.2-2-9-2-14.3 0-5.3.7-10 2-14.1 1.3-4.1 3.2-7.6 5.5-10.5 2.4-2.9 5.3-5.1 8.8-6.6 3.5-1.5 7.4-2.2 11.7-2.2s8.2.7 11.7 2.2c3.5 1.5 6.4 3.7 8.8 6.6 2.4 2.9 4.2 6.4 5.5 10.5 1.3 4.1 2 8.8 2 14.1 0 5.3-.7 10.1-2 14.3s-3.2 7.8-5.5 10.7c-2.4 2.9-5.3 5.1-8.8 6.6-3.5 1.5-7.4 2.3-11.7 2.3zm0-11.3c2.4 0 4.6-.5 6.5-1.5 1.9-1 3.5-2.5 4.8-4.4 1.3-1.9 2.3-4.3 3-7.1.7-2.8 1-5.9 1-9.5 0-3.6-.3-6.7-1-9.5-.7-2.8-1.7-5.2-3-7.1-1.3-1.9-2.9-3.4-4.8-4.4-1.9-1-4.1-1.5-6.5-1.5s-4.6.5-6.5 1.5c-1.9 1-3.5-2.5-4.8-4.4-1.3-1.9-2.3-4.3-3-7.1-.7-2.8-1-5.9-1-9.5 0-3.6.3-6.7 1-9.5.7-2.8 1.7-5.2 3-7.1 1.3-1.9 2.9-3.4 4.8-4.4 1.9-1-4.1 1.5 6.5 1.5z" fill="white"/>
+            <path d="M304.6 31.3h27.8v9.9h-16.9v16.1h15.3v9.9h-15.3v30.2h-10.9V31.3z" fill="white"/>
+            <path d="M363.3 97.4V31.3h10.9v26.7l16.1-26.7h12.5l-18.4 29.8 19.5 36.3h-12.4l-14.3-27.4-3 5.1v22.3h-10.9z" fill="white"/>
+            <path d="M434.6 98.7c-4.1 0-7.8-.8-11-2.4-3.2-1.6-5.8-3.9-7.8-6.9-2-3-3-6.6-3-10.8V31.3h10.9v46c0 2.5.5 4.6 1.6 6.3 1.1 1.7 2.7 2.6 4.9 2.6s3.8-.9 4.9-2.6c1.1-1.7 1.6-3.8 1.6-6.3V31.3h10.9v47.3c0 4.2-1 7.8-3 10.8-2 3-4.6 5.3-7.8 6.9-3.4 1.6-7.2 2.4-11.2 2.4z" fill="white"/>
+            <path d="M72.2 13.5c-3.1 3.5-5.9 7.4-8.3 11.6-2.5 4.3-4.5 8.9-6 13.7-1.5-4.8-3.5-9.4-6-13.7-2.4-4.2-5.2-8.1-8.3-11.6C35.5 5 25.1.4 13.5.4v132.2c11.6 0 22-4.6 30.1-13.1 3.1-3.5 5.9-7.4 8.3-11.6 2.5-4.3 4.5-8.9 6-13.7 1.5 4.8 3.5 9.4 6 13.7 2.4 4.2 5.2 8.1 8.3 11.6 8.1 8.5 18.5 13.1 30.1 13.1V.4c-11.6 0-22 4.6-30.1 13.1z" fill="#91d400"/>
+        </svg>
     </div>
 
     <div class="content">
-        <div class="main-stats">
-            <div id="campaign-label">Campaign Progress</div>
+        <div class="stats-area">
+            <div id="label-text">Campaign Progress</div>
             <div class="progress-track">
                 <div id="bar" class="progress-fill"></div>
-                <div class="progress-text">
+                <div class="progress-display">
                     <span id="current-val">0</span>
                     <span id="goal-val">GOAL: 0</span>
                 </div>
@@ -148,17 +152,17 @@
         </div>
 
         <div class="qr-section" id="qr-wrap" style="visibility: hidden;">
-            <span id="creator-code"></span>
-            <div class="qr-border">
+            <span id="creator-name"></span>
+            <div class="qr-box">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-msg">Scan Me</span>
+            <span class="qr-label">Scan Me</span>
         </div>
     </div>
 </div>
 
 <script>
-    const URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    const API = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     
@@ -167,7 +171,7 @@
 
     async function sync() {
         try {
-            const res = await fetch(`${URL}?creator=${creator}`);
+            const res = await fetch(`${API}?creator=${creator}`);
             const data = await res.json();
             
             const curr = parseInt(data.current);
@@ -175,12 +179,12 @@
             const pct = (curr / goal) * 100;
 
             if (last !== -1 && curr > last) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff'] });
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58b622', '#ffffff', '#91d400'] });
             }
             last = curr;
 
-            document.getElementById('campaign-label').innerText = data.text;
-            document.getElementById('creator-code').innerText = creator;
+            document.getElementById('label-text').innerText = data.text;
+            document.getElementById('creator-name').innerText = creator;
             document.getElementById('current-val').innerText = curr;
             document.getElementById('goal-val').innerText = "GOAL: " + goal;
             document.getElementById('bar').style.width = Math.min(pct, 100) + "%";
@@ -189,7 +193,7 @@
                 document.getElementById('qr-wrap').style.visibility = "visible";
                 if (!qr) {
                     qr = new QRCode(document.getElementById('qrcode'), {
-                        text: data.link.trim(), width: 90, height: 90
+                        text: data.link.trim(), width: 100, height: 100
                     });
                 } else {
                     qr.makeCode(data.link.trim());
@@ -199,7 +203,7 @@
     }
 
     sync();
-    setInterval(sync, 30000); // 30s check
+    setInterval(sync, 30000);
 </script>
 
 </body>
