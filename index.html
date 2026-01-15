@@ -27,11 +27,10 @@
             overflow: hidden;
         }
 
-        /* MINIMIZED BEZELS (PADDING) */
         .brand-header {
             width: 100%;
             background: #58b622; 
-            padding: 15px 0; /* Reduced from 70px to bring bezels close to logo */
+            padding: 15px 0; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -94,16 +93,12 @@
             pointer-events: none;
         }
 
-        /* Numerical Styling - Matching sizes */
         .big-number {
             font-size: 52px; 
             font-weight: 900;
+            color: #000000;
         }
 
-        #current-count { color: #ffffff; text-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-        #goal-num { color: #333; }
-
-        /* Label Styling - Aligned height */
         .small-label {
             font-size: 16px; 
             font-weight: 800; 
@@ -111,19 +106,21 @@
             letter-spacing: 0.5px;
         }
 
-        #first-boxes-text { color: rgba(255,255,255,0.9); margin-left: 10px; }
-        #goal-label { color: #888; margin-right: 10px; }
+        #first-boxes-text { color: #000000; margin-left: 10px; opacity: 0.9; }
+        #goal-label { color: #000000; margin-right: 10px; opacity: 0.6; }
 
-        .flex-group { display: flex; align-items: baseline; }
+        .flex-group { display: flex; align-items: center; }
 
+        /* Updated Zwilling promotional text to pure black */
         #campaign-label { 
             margin-top: 15px;
             font-size: 13px; 
             font-weight: 700; 
-            color: #888; 
+            color: #000000; 
             text-transform: uppercase; 
             letter-spacing: 1px;
             line-height: 1.4;
+            opacity: 0.85;
         }
 
         .qr-section {
@@ -141,6 +138,7 @@
             box-shadow: 0 10px 30px rgba(88, 182, 34, 0.2);
         }
 
+        /* Updated label to "Scan Me" */
         .qr-instruction { 
             font-size: 13px; 
             font-weight: 900; 
@@ -181,7 +179,7 @@
             <div class="qr-frame">
                 <div id="qrcode"></div>
             </div>
-            <span class="qr-instruction">Scan to Save</span>
+            <span class="qr-instruction">Scan Me</span>
         </div>
     </div>
 </div>
