@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body { 
@@ -15,12 +15,11 @@
             font-family: 'Inter', sans-serif;
         }
         
-        /* Container sized to prevent cropping in OBS */
         .container { 
             width: 580px; 
             height: 180px;
             background: #ffffff; 
-            padding: 20px 30px; 
+            padding: 25px 30px; 
             border-radius: 24px; 
             box-sizing: border-box;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -29,24 +28,36 @@
             border-bottom: 8px solid #58b622;
         }
 
-        /* Left Side: Progress Area */
         .goal-area {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-right: 30px;
+            padding-right: 20px;
         }
 
+        /* Cohesive Header Layout */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: baseline;
             margin-bottom: 12px;
         }
 
-        #display-text { font-size: 12px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
-        #creator-name { font-size: 18px; font-weight: 900; color: #58b622; }
+        #display-text { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #aaa; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        #creator-name { 
+            font-size: 20px; 
+            font-weight: 900; 
+            color: #58b622; 
+            text-transform: uppercase;
+        }
 
         .bar-container {
             position: relative;
@@ -80,7 +91,7 @@
 
         .footer-text { margin-top: 10px; font-size: 10px; font-weight: 700; color: #ccc; text-transform: uppercase; }
 
-        /* Right Side: QR Code with scannable padding */
+        /* QR Section with Green Glow */
         .qr-section {
             width: 100px;
             display: flex;
@@ -89,30 +100,28 @@
             justify-content: center;
         }
 
-        .qr-label {
-            font-size: 9px;
-            font-weight: 900;
-            color: #58b622;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        /* The actual QR container with white space around it */
         .qr-holder {
             background: #ffffff;
-            padding: 8px; /* Critical for scanner to detect edges */
+            padding: 8px;
             border-radius: 12px;
-            border: 1px solid #eee;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            /* Branded Green Glow */
+            box-shadow: 0 0 15px rgba(88, 182, 34, 0.4);
+            border: 2px solid rgba(88, 182, 34, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 6px;
         }
 
-        #qrcode-canvas img {
-            display: block;
+        .qr-label {
+            font-size: 10px;
+            font-weight: 900;
+            color: #58b622;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
+
+        #qrcode-canvas img { display: block; }
     </style>
 </head>
 <body>
@@ -135,15 +144,14 @@
     </div>
 
     <div class="qr-section" id="qr-wrapper" style="visibility: hidden;">
-        <span class="qr-label">Scan Me</span>
         <div class="qr-holder">
             <div id="qrcode-canvas"></div>
         </div>
+        <span class="qr-label">Scan Me</span>
     </div>
 </div>
 
 <script>
-    // Keep your working API_URL intact
     const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
@@ -155,7 +163,6 @@
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
             
-            // UI Updates
             const percent = (data.current / data.goal) * 100;
             document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
@@ -163,17 +170,15 @@
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
 
-            // QR Code Generation
             if (data.link && data.link.trim() !== "") {
                 const wrapper = document.getElementById('qr-wrapper');
                 const container = document.getElementById('qrcode-canvas');
-                
                 wrapper.style.visibility = "visible";
                 
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(container, {
                         text: data.link.trim(),
-                        width: 72, // Reduced slightly for better fit
+                        width: 72,
                         height: 72,
                         colorDark : "#000000",
                         colorLight : "#ffffff",
