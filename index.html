@@ -15,12 +15,12 @@
             font-family: 'Inter', sans-serif;
         }
         
-        /* 550x200 Container */
+        /* Container sized to prevent cropping in OBS */
         .container { 
-            width: 550px; 
+            width: 580px; 
             height: 180px;
             background: #ffffff; 
-            padding: 20px; 
+            padding: 20px 30px; 
             border-radius: 24px; 
             box-sizing: border-box;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -29,20 +29,20 @@
             border-bottom: 8px solid #58b622;
         }
 
-        /* Left Side: Goal Info */
+        /* Left Side: Progress Area */
         .goal-area {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-right: 25px;
+            padding-right: 30px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         #display-text { font-size: 12px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
@@ -51,9 +51,9 @@
         .bar-container {
             position: relative;
             width: 100%;
-            height: 50px; 
-            background: #f0f0f0;
-            border-radius: 25px;
+            height: 54px; 
+            background: #f2f2f2;
+            border-radius: 27px;
             overflow: hidden;
         }
 
@@ -70,36 +70,49 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 22px;
             box-sizing: border-box;
             pointer-events: none;
         }
 
-        #current-count { font-size: 28px; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        #goal-total { font-size: 16px; font-weight: 800; color: #444; }
+        #current-count { font-size: 30px; font-weight: 900; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        #goal-total { font-size: 17px; font-weight: 800; color: #444; }
 
-        .footer-text { margin-top: 8px; font-size: 10px; font-weight: 700; color: #ccc; text-transform: uppercase; }
+        .footer-text { margin-top: 10px; font-size: 10px; font-weight: 700; color: #ccc; text-transform: uppercase; }
 
-        /* Right Side: Dedicated QR Box */
-        .qr-box {
-            width: 110px;
-            height: 110px;
+        /* Right Side: QR Code with scannable padding */
+        .qr-section {
+            width: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #f9f9f9;
-            border-radius: 15px;
-            padding: 10px;
-            box-sizing: border-box;
         }
 
-        #qrcode-canvas {
-            width: 75px !important;
-            height: 75px !important;
+        .qr-label {
+            font-size: 9px;
+            font-weight: 900;
+            color: #58b622;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
 
-        .qr-caption { font-size: 9px; font-weight: 900; color: #58b622; text-transform: uppercase; margin-bottom: 5px; }
+        /* The actual QR container with white space around it */
+        .qr-holder {
+            background: #ffffff;
+            padding: 8px; /* Critical for scanner to detect edges */
+            border-radius: 12px;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #qrcode-canvas img {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -121,13 +134,16 @@
         <div class="footer-text">Boxes Tracked This Month</div>
     </div>
 
-    <div class="qr-box" id="qr-wrapper" style="visibility: hidden;">
-        <span class="qr-caption">Scan Me</span>
-        <div id="qrcode-canvas"></div>
+    <div class="qr-section" id="qr-wrapper" style="visibility: hidden;">
+        <span class="qr-label">Scan Me</span>
+        <div class="qr-holder">
+            <div id="qrcode-canvas"></div>
+        </div>
     </div>
 </div>
 
 <script>
+    // Keep your working API_URL intact
     const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
@@ -139,7 +155,7 @@
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
             
-            // Progress Update
+            // UI Updates
             const percent = (data.current / data.goal) * 100;
             document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
@@ -147,7 +163,7 @@
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
 
-            // QR Code Logic via QRCode.js
+            // QR Code Generation
             if (data.link && data.link.trim() !== "") {
                 const wrapper = document.getElementById('qr-wrapper');
                 const container = document.getElementById('qrcode-canvas');
@@ -157,8 +173,8 @@
                 if (!qrGenerator) {
                     qrGenerator = new QRCode(container, {
                         text: data.link.trim(),
-                        width: 75,
-                        height: 75,
+                        width: 72, // Reduced slightly for better fit
+                        height: 72,
                         colorDark : "#000000",
                         colorLight : "#ffffff",
                         correctLevel : QRCode.CorrectLevel.H
