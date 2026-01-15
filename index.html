@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Transparent background for OBS */
+        body { font-family: 'Helvetica', sans-serif; color: white; background: transparent; overflow: hidden; margin: 0; padding: 10px; }
+        
+        .container { 
+            width: 350px; 
+            background: rgba(0,0,0,0.8); 
+            padding: 15px; 
+            border-radius: 12px; 
+            border-left: 5px solid #58b622; /* HF Green */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .label { 
+            font-size: 14px; 
+            font-weight: bold; 
+            margin-bottom: 8px; 
+            text-transform: uppercase; 
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bg { 
+            background: #222; 
+            height: 20px; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            border: 1px solid #444;
+        }
+
+        .progress-fill { 
+            background: linear-gradient(90deg, #58b622, #96d96e); 
+            height: 100%; 
+            width: 0%; 
+            transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67); 
+            box-shadow: 0 0 10px #58b622;
+        }
+
+        .stats { 
+            margin-top: 8px; 
+            font-size: 12px; 
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #creator-name { color: #58b622; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="label">
+        <span id="display-text">Campaign Goal</span>
+        <span id="creator-name"></span>
+    </div>
+    <div class="progress-bg">
+        <div id="bar" class="progress-fill"></div>
+    </div>
+    <div class="stats">
+        <span id="current-count">0 boxes</span>
+        <span id="goal-total">Goal: 0</span>
+    </div>
+</div>
+
+<script>
+    // Your specific Google Apps Script URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+
+    // Get ?creator=NAME from the URL
+    const params = new URLSearchParams(window.location.search);
+    const creator = params.get('creator') || 'Default';
+
+    async function updateWidget() {
+        try {
+            const response = await fetch(`${API_URL}?creator=${creator}`);
+            const data = await response.json();
+
+            const percent = (data.current / data.goal) * 100;
+            
+            document.getElementById('display-text').innerText = data.text;
+            document.getElementById('creator-name').innerText = creator;
+            document.getElementById('current-count').innerText = data.current + " boxes";
+            document.getElementById('goal-total').innerText = "Goal: " + data.goal;
+            document.getElementById('bar').style.width = Math.min(percent, 100) + "%";
+        } catch (e) {
+            console.error("Error fetching data - make sure your Sheet is set to 'Anyone with link'", e);
+        }
+    }
+
+    // Refresh every 2 minutes (120000ms) to stay within Google's free quotas
+    updateWidget();
+    setInterval(updateWidget, 120000);
+</script>
+
+</body>
+</html>
