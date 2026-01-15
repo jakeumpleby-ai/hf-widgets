@@ -2,17 +2,43 @@
 <html>
 <head>
     <style>
+        /* Transparent background for OBS */
         body { font-family: 'Helvetica', sans-serif; color: white; background: transparent; overflow: hidden; margin: 0; padding: 10px; text-align: center; }
+        
+        /* The wrapper handles the fade-in/out rotation */
         .widget-wrapper { width: 380px; display: inline-block; position: relative; transition: opacity 1s ease; opacity: 0; }
         .visible { opacity: 1; }
 
         .video-container { width: 100%; height: 250px; position: relative; margin-bottom: -30px; }
-        video { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; height: auto; transition: opacity 0.5s ease; }
+        
+        video {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: auto;
+            transition: opacity 0.5s ease;
+        }
+
         .hidden { opacity: 0; pointer-events: none; }
 
-        .container { background: rgba(0,0,0,0.85); padding: 15px; border-radius: 12px; border-bottom: 5px solid #58b622; position: relative; z-index: 2; }
+        /* Goal Bar Styling */
+        .container { 
+            background: rgba(0,0,0,0.85); 
+            padding: 15px; 
+            border-radius: 12px; 
+            border-bottom: 5px solid #58b622; 
+            position: relative; 
+            z-index: 2; 
+        }
+        .label { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; display: flex; justify-content: space-between; }
         .progress-bg { background: #222; height: 20px; border-radius: 10px; overflow: hidden; border: 1px solid #444; }
-        .progress-fill { background: linear-gradient(90deg, #58b622, #96d96e); height: 100%; width: 0%; transition: width 1.5s ease; }
+        .progress-fill { 
+            background: linear-gradient(90deg, #58b622, #96d96e); 
+            height: 100%; width: 0%; 
+            transition: width 1.5s ease; 
+        }
         .stats { margin-top: 8px; font-size: 12px; color: #aaa; display: flex; justify-content: space-between; }
         #creator-name { color: #58b622; font-weight: bold; }
     </style>
@@ -21,21 +47,27 @@
 
 <div id="main-wrapper" class="widget-wrapper">
     <div class="video-container">
-        <video id="alert-video" muted playsinline class="hidden"><source src="purchase.mp4" type="video/mp4"></video>
-        <video id="goal-video" muted playsinline class="hidden"><source src="goal_reached.mp4" type="video/mp4"></video>
-        <video id="bg-loop" autoplay loop muted playsinline><source src="meals_loop.mp4" type="video/mp4"></video>
+        <video id="alert-video" muted playsinline class="hidden"><source src="Slide2.webm" type="video/mp4"></video>
+        <video id="goal-video" muted playsinline class="hidden"><source src="Slide3.webm" type="video/mp4"></video>
+        <video id="bg-loop" autoplay loop muted playsinline><source src="Slide1.webm" type="video/mp4"></video>
     </div>
 
     <div class="container">
-        <div class="label"><span id="display-text">Goal</span> <span id="creator-name"></span></div>
+        <div class="label">
+            <span id="display-text">Campaign Goal</span>
+            <span id="creator-name"></span>
+        </div>
         <div class="progress-bg"><div id="bar" class="progress-fill"></div></div>
-        <div class="stats"><span id="current-count">0 boxes</span> <span id="goal-total">Goal: 0</span></div>
+        <div class="stats">
+            <span id="current-count">0 boxes</span>
+            <span id="goal-total">Goal: 0</span>
+        </div>
     </div>
 </div>
 
 <script>
-    // YOUR ACTUAL SCRIPT URL
-    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    // Your verified Apps Script URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPL_bKPLyHtmDSG/exec";
     
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
@@ -43,7 +75,7 @@
     let lastCount = -1;
     let isAlertPlaying = false;
 
-    // ROTATION SETTINGS (In Minutes)
+    // Rotation settings (Minutes)
     const SHOW_TIME = 2; 
     const HIDE_TIME = 5;
 
@@ -52,12 +84,12 @@
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
 
-            // Trigger Alert if count goes up
+            // Trigger Alert if count increases
             if (lastCount !== -1 && data.current > lastCount) {
                 triggerAlert('alert-video');
             }
             
-            // Trigger Goal Celebration if hitting 100%
+            // Trigger Goal Met animation
             if (data.current >= data.goal && lastCount < data.goal && lastCount !== -1) {
                 triggerAlert('goal-video');
             }
@@ -68,7 +100,7 @@
             document.getElementById('current-count').innerText = data.current + " boxes";
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min((data.current / data.goal) * 100, 100) + "%";
-        } catch (e) { console.error("Data Fetch Error:", e); }
+        } catch (e) { console.error("Data error", e); }
     }
 
     function triggerAlert(videoId) {
@@ -77,10 +109,9 @@
         const alertVid = document.getElementById(videoId);
         const bgLoop = document.getElementById('bg-loop');
 
-        wrapper.classList.add('visible'); // Force show widget
+        wrapper.classList.add('visible'); 
         bgLoop.classList.add('hidden');
         alertVid.classList.remove('hidden');
-        
         alertVid.currentTime = 0;
         alertVid.play();
 
@@ -94,23 +125,15 @@
     function rotationCycle() {
         if (isAlertPlaying) return;
         const wrapper = document.getElementById('main-wrapper');
-        
-        // Appear
         wrapper.classList.add('visible');
-        
-        // Hide after SHOW_TIME
-        setTimeout(() => {
-            if (!isAlertPlaying) {
-                wrapper.classList.remove('visible');
-            }
+        setTimeout(() => { 
+            if (!isAlertPlaying) wrapper.classList.remove('visible'); 
         }, SHOW_TIME * 60000);
     }
 
-    // Run data updates every 30 seconds
     updateData();
-    setInterval(updateData, 30000);
+    setInterval(updateData, 30000); // Check sheet every 30 seconds
     
-    // Start rotation cycle
     rotationCycle();
     setInterval(rotationCycle, (SHOW_TIME + HIDE_TIME) * 60000);
 </script>
