@@ -14,6 +14,7 @@
         .progress-bg { background: #222; height: 20px; border-radius: 10px; overflow: hidden; border: 1px solid #444; }
         .progress-fill { background: linear-gradient(90deg, #58b622, #96d96e); height: 100%; width: 0%; transition: width 1.5s ease; }
         .stats { margin-top: 8px; font-size: 12px; color: #aaa; display: flex; justify-content: space-between; }
+        #creator-name { color: #58b622; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -33,14 +34,16 @@
 </div>
 
 <script>
-    const API_URL = "YOUR_APPS_SCRIPT_URL"; // Keep your URL here
+    // YOUR ACTUAL SCRIPT URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbzjYyCdB4pcjYEJJTvLB1z--HQSEFn_3XOzDn5rSA43KIhbF76uoGZH_bKPLyHtmDSG/exec";
+    
     const params = new URLSearchParams(window.location.search);
     const creator = params.get('creator') || 'Default';
     
     let lastCount = -1;
     let isAlertPlaying = false;
 
-    // CONFIGURATION (In Minutes)
+    // ROTATION SETTINGS (In Minutes)
     const SHOW_TIME = 2; 
     const HIDE_TIME = 5;
 
@@ -49,26 +52,35 @@
             const response = await fetch(`${API_URL}?creator=${creator}`);
             const data = await response.json();
 
-            if (lastCount !== -1 && data.current > lastCount) triggerAlert('alert-video');
-            if (data.current >= data.goal && lastCount < data.goal && lastCount !== -1) triggerAlert('goal-video');
+            // Trigger Alert if count goes up
+            if (lastCount !== -1 && data.current > lastCount) {
+                triggerAlert('alert-video');
+            }
+            
+            // Trigger Goal Celebration if hitting 100%
+            if (data.current >= data.goal && lastCount < data.goal && lastCount !== -1) {
+                triggerAlert('goal-video');
+            }
             
             lastCount = data.current;
+            document.getElementById('display-text').innerText = data.text;
             document.getElementById('creator-name').innerText = creator;
             document.getElementById('current-count').innerText = data.current + " boxes";
             document.getElementById('goal-total').innerText = "Goal: " + data.goal;
             document.getElementById('bar').style.width = Math.min((data.current / data.goal) * 100, 100) + "%";
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error("Data Fetch Error:", e); }
     }
 
-    function triggerAlert(videoPath) {
+    function triggerAlert(videoId) {
         isAlertPlaying = true;
         const wrapper = document.getElementById('main-wrapper');
-        const alertVid = document.getElementById(videoPath);
+        const alertVid = document.getElementById(videoId);
         const bgLoop = document.getElementById('bg-loop');
 
-        wrapper.classList.add('visible');
+        wrapper.classList.add('visible'); // Force show widget
         bgLoop.classList.add('hidden');
         alertVid.classList.remove('hidden');
+        
         alertVid.currentTime = 0;
         alertVid.play();
 
@@ -83,19 +95,22 @@
         if (isAlertPlaying) return;
         const wrapper = document.getElementById('main-wrapper');
         
-        // Show Widget
+        // Appear
         wrapper.classList.add('visible');
         
-        // After SHOW_TIME, hide it
+        // Hide after SHOW_TIME
         setTimeout(() => {
-            if (!isAlertPlaying) wrapper.classList.remove('visible');
+            if (!isAlertPlaying) {
+                wrapper.classList.remove('visible');
+            }
         }, SHOW_TIME * 60000);
     }
 
-    // Initialize
+    // Run data updates every 30 seconds
     updateData();
-    setInterval(updateData, 30000); // Check data every 30s
+    setInterval(updateData, 30000);
     
+    // Start rotation cycle
     rotationCycle();
     setInterval(rotationCycle, (SHOW_TIME + HIDE_TIME) * 60000);
 </script>
